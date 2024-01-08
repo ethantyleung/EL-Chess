@@ -23,13 +23,13 @@ public abstract class Tile {
 	
 	private static Map<Integer, EmptyTile> createEmptyTiles() {
 
-		final Map<Integer, EmptyTile> EMPTY_TILE_MAP = new HashMap<>();
+		final Map<Integer, EmptyTile> EMPTY_MAP = new HashMap<>();
 
 		for(int i = 0; i < 64; i++){
-			EMPTY_TILE_MAP.put(i, new EmptyTile(i));
+			EMPTY_MAP.put(i, new EmptyTile(i));
 		}
 
-		return EMPTY_TILE_MAP;
+		return EMPTY_MAP;
 	}
 
 	public abstract boolean isTileOccupied();
