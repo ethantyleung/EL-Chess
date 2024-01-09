@@ -1,13 +1,16 @@
 package chess.pieces;
 
+/* Start of package imports */
 import java.util.ArrayList;
 import java.util.List;
-
 import com.google.common.collect.ImmutableList;
-
 import chess.Type;
 import chess.board.*;
+/* End of package imports*/
 
+/* The Knight subclass. Describes the Knight piece in Chess.
+*
+*/
 public class Knight extends Piece {
 
     private final static int[] POSSIBLE_MOVES = {-17, -15, -10, 6, 6, 10, 15, 17};
