@@ -31,6 +31,8 @@ public class Bishop extends Piece{
             int possiblePosition = this.position;
             int offset = POSSIBLE_DIRECTIONS[i];
 
+            if(!validBishopDirection(POSSIBLE_DIRECTIONS[i])) continue;
+
             while(Board.isValid(possiblePosition)){ // Run while the current tile is still on the board.
 
                 possiblePosition += offset; // Apply the offset.
@@ -52,6 +54,17 @@ public class Bishop extends Piece{
             }            
         }
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    private boolean validBishopDirection(final int direction){
+        boolean valid = true;
+        if(this.position % 8 == 0) { // If the bishop is in the first column AND
+            if(direction == 7 || direction == -9) valid = false; // If the bishop is trying to move in the bottom left diagonal or top left diagonal, it is not a valid direction.
+        }
+        else if(this.position % 8 == 7) { //If the bishop is in the last column (8th)
+            if(direction == -7 || direction == 9) valid = false; // If the bishop is trying to move in the bottom right diagonal or top right diagonal, it is not a valid direction.
+        }
+        return valid;
     }
 
 }
