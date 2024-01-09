@@ -1,6 +1,4 @@
-/* Package declarations */
 package chess.board;
-/* End of package declarations */
 
 /* Start of package imports */
 import chess.pieces.*;
@@ -31,7 +29,7 @@ public abstract class Tile {
 
 		final Map<Integer, EmptyTile> EMPTY_MAP = new HashMap<>();
 
-		for(int i = 0; i < 64; i++){
+		for(int i = 0; i < Board.NUM_TILES; i++){
 			EMPTY_MAP.put(i, new EmptyTile(i));
 		}
 
