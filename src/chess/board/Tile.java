@@ -12,16 +12,18 @@ import java.util.HashMap;
 */
 public abstract class Tile {
 	
-	protected final int TILE_COORDINATE;
+	protected final int TILE_COORDINATE; // Every tile has a unique coordinate (0-63).
 
 	private static final Map<Integer, EmptyTile> EMPTY_TILES = createEmptyTiles();
 	
+	//Tile Constructor
 	private Tile(final int tileCoordinate) {
 		this.TILE_COORDINATE = tileCoordinate;
 	}
 	
+	// Function to create an occupied tile (a tile with a piece on it).
 	public static Tile createTile(final int tileCoordinate, final Piece piece){
-		// if piece != null, create new occupied tile with type of piece at coordinate, else return piece object at coordinate
+		// if there is no piece, create new occupied tile with the specified piece at coordinate, else return .
 		return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES.get(tileCoordinate);
 	}
 

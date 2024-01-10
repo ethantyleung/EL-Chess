@@ -7,51 +7,54 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import chess.Type;
 import chess.board.*;
+import chess.board.Move.AttackMove;
+import chess.board.Move.BaseMove;
 /* End of package imports*/
+
 
 /* The Knight subclass. Describes the Knight piece in Chess.
 *
 */
 public class Knight extends Piece {
 
+    // Possible Moves array contains offsets required to move Knight in every possible direction.
     private final static int[] POSSIBLE_MOVES = {-17, -15, -10, 6, 6, 10, 15, 17};
 
-    private Knight(final int position, Type pieceType){
+    // Base Knight Constructor
+    private Knight(final int position, final Type pieceType){
         super(position, pieceType);
     }
 
     @Override
-    public Collection<Move> calculateLegalMoves(Board board) {
+    public Collection<Move> calculateLegalMoves(final Board board) {
         
         final List<Move> legalMoves = new ArrayList<>();
-        int possiblePosition;
+        int possibleDestinationPosition;
 
         for(int i = 0; i < POSSIBLE_MOVES.length; i++){
-            possiblePosition = this.position + POSSIBLE_MOVES[i];
-            if(Board.isValid(possiblePosition)) {
+            possibleDestinationPosition = this.position + POSSIBLE_MOVES[i]; // Apply offset
+            if(Board.isValid(possibleDestinationPosition)) {
                 // Knights can only move a maximum of two columns, consider edge cases
-                if(validKnightMove(this.position, possiblePosition)) continue;
+                if(notValidKnightMove(this.position, possibleDestinationPosition)) continue;
 
-                final Tile possibleDestination = board.getTile(this.position + POSSIBLE_MOVES[i]);
+                final Tile possibleDestinationTile = board.getTile(this.position + POSSIBLE_MOVES[i]);
 
-                if(!possibleDestination.isTileOccupied()) { // If the tile is not occupied
-                    legalMoves.add(new Move()); // Non-attacking move.
+                if(!possibleDestinationTile.isTileOccupied()) { // If the tile is not occupied
+                    legalMoves.add(new BaseMove(board, this, possibleDestinationPosition)); // Add a Non-attacking move.
                 } else {
-                    final Piece pieceAtDestination = possibleDestination.getPiece();
-                    final Type type = pieceAtDestination.getType();
-                    if(this.pieceType != type) legalMoves.add(new Move()); // Attacking move.
+                    final Piece pieceAtDestination = possibleDestinationTile.getPiece();
+                    final Type typeAtDestination = pieceAtDestination.getType();
+                    if(this.pieceType != typeAtDestination) legalMoves.add(new AttackMove(board, this, possibleDestinationPosition, pieceAtDestination)); // Add an Attacking move.
                 }
-
             }
         }
-
         return ImmutableList.copyOf(legalMoves);
     }
     
-    private boolean validKnightMove(final int coordinate, final int possiblePosition){
+    private boolean notValidKnightMove(final int coordinate, final int possibleDestinationPosition){
         // Taking the mod of a linear position value returns the column - 1. 
         // Checks if the difference between the two columns is greater than two.
-        return ( Math.abs( (coordinate % 8) - (possiblePosition % 8)) > 2);
+        return ( Math.abs( (coordinate % 8) - (possibleDestinationPosition % 8)) > 2);
     }
 
 }

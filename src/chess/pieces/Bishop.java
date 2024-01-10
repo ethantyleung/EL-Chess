@@ -28,40 +28,41 @@ public class Bishop extends Piece{
         
         for(int i = 0; i < POSSIBLE_DIRECTIONS.length; i++) { // Iterate through each diagonal direction.
             
-            int possiblePosition = this.position;
+            int possibleDestinationPosition = this.position;
             int offset = POSSIBLE_DIRECTIONS[i];
 
-            if(!validBishopDirection(POSSIBLE_DIRECTIONS[i])) continue;
+            if(!validBishopDirection(offset, possibleDestinationPosition)) continue; // The offset does not work for certain edge cases.
 
-            while(Board.isValid(possiblePosition)){ // Run while the current tile is still on the board.
+            while(Board.isValid(possibleDestinationPosition)){ // Run while the current tile is still on the board.
 
-                possiblePosition += offset; // Apply the offset.
+                possibleDestinationPosition += offset; // Apply the offset.
 
-                if(Board.isValid(possiblePosition)){ // Check if the tile is still valid.
+                if(Board.isValid(possibleDestinationPosition)){ // Check if the tile is still valid.
 
-                    final Tile possibleDestination = board.getTile(possiblePosition);
+                    final Tile possibleDestination = board.getTile(possibleDestinationPosition);
 
                     if(!possibleDestination.isTileOccupied()){
-                        legalMoves.add(new BaseMove(board, this, possiblePosition));
+                        legalMoves.add(new BaseMove(board, this, possibleDestinationPosition));
                     } else {
                         final Piece pieceAtDestination = possibleDestination.getPiece();
-                        final Type type = pieceAtDestination.getType();
-                        if(this.pieceType != type) legalMoves.add(new AttackMove(board, pieceAtDestination, i, pieceAtDestination));
+                        final Type typeAtDestination = pieceAtDestination.getType();
+                        if(this.pieceType != typeAtDestination) legalMoves.add(new AttackMove(board, pieceAtDestination, i, pieceAtDestination));
                         // Since the tile is occupied, there is a piece blocking further potential moves from being made in this direction. Thus, break.
                         break;
                     }
+                    if(!validBishopDirection(offset, possibleDestinationPosition)) break; // check if the loop has reached an invalid tile.
                 }
             }            
         }
         return ImmutableList.copyOf(legalMoves);
     }
 
-    private boolean validBishopDirection(final int direction){
+    private boolean validBishopDirection(final int direction, final int possibleDestinationPosition){
         boolean valid = true;
-        if(this.position % 8 == 0) { // If the bishop is in the first column AND
+        if(possibleDestinationPosition % 8 == 0) { // If the bishop is in the first column AND
             if(direction == 7 || direction == -9) valid = false; // If the bishop is trying to move in the bottom left diagonal or top left diagonal, it is not a valid direction.
         }
-        else if(this.position % 8 == 7) { //If the bishop is in the last column (8th)
+        else if(possibleDestinationPosition % 8 == 7) { //If the bishop is in the last column (8th)
             if(direction == -7 || direction == 9) valid = false; // If the bishop is trying to move in the bottom right diagonal or top right diagonal, it is not a valid direction.
         }
         return valid;

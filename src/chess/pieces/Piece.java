@@ -14,7 +14,8 @@ public abstract class Piece {
     protected final int position;
     protected final Type pieceType;
 
-    protected Piece(final int position, Type pieceType){
+    // Piece Constructor.
+    protected Piece(final int position, final Type pieceType){
         this.position = position;
         this.pieceType = pieceType;
     }
