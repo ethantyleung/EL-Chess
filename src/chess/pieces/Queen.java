@@ -11,13 +11,11 @@ import chess.board.Move.AttackMove;
 import chess.board.Move.BaseMove;
 /* End of package imports*/
 
-public class Bishop extends Piece{
+public class Queen extends Piece {
     
-    // Possible direction array that contains the required offset for a one tile move in each respective diagonal direction.
-    private final static int[] POSSIBLE_DIRECTIONS = {-9, -7, 7, 9};
+    private static final int[] POSSIBLE_DIRECTIONS = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    // Base Bishop Constructor
-    private Bishop(final int position, final Type pieceType){
+    Queen(final int position, final Type pieceType){
         super(position, pieceType);
     }
 
@@ -25,13 +23,13 @@ public class Bishop extends Piece{
     public Collection<Move> calculateLegalMoves(Board board) {
         
         final List<Move> legalMoves = new ArrayList<>();
-        
+
         for(int i = 0; i < POSSIBLE_DIRECTIONS.length; i++) { // Iterate through each diagonal direction.
             
             int possibleDestinationPosition = this.position;
             int offset = POSSIBLE_DIRECTIONS[i];
 
-            if(!validBishopDirection(offset, possibleDestinationPosition)) continue; // The offset does not work for certain edge cases.
+            if(!validQueenDirection(offset, possibleDestinationPosition)) continue; // The offset does not work for certain edge cases.
 
             while(Board.isValid(possibleDestinationPosition)){ // Run while the current tile is still on the board.
 
@@ -50,20 +48,27 @@ public class Bishop extends Piece{
                         // Since the tile is occupied, there is a piece blocking further potential moves from being made in this direction. Thus, break.
                         break;
                     }
-                    if(!validBishopDirection(offset, possibleDestinationPosition)) break; // check if the loop has reached an invalid tile.
+                    if(!validQueenDirection(offset, possibleDestinationPosition)) break; // check if the loop has reached an invalid tile.
                 }
             }            
         }
+
         return ImmutableList.copyOf(legalMoves);
     }
 
-    private boolean validBishopDirection(final int direction, final int possibleDestinationPosition){
+    private boolean validQueenDirection(final int direction, final int possibleDestinationPosition){
         boolean valid = true;
-        if(possibleDestinationPosition % 8 == 0) { // If the bishop is in the first column AND
-            if(direction == 7 || direction == -9) valid = false; // If the bishop is trying to move in the bottom left diagonal or top left diagonal, it is not a valid direction.
+        if(possibleDestinationPosition % 8 == 0) { // If the queen is in the first column AND
+            if(direction == 7 || direction == -9) valid = false; // If the queen is trying to move in the bottom left diagonal or top left diagonal, it is not a valid direction.
         }
-        else if(possibleDestinationPosition % 8 == 7) { //If the bishop is in the last column (8th)
-            if(direction == -7 || direction == 9) valid = false; // If the bishop is trying to move in the bottom right diagonal or top right diagonal, it is not a valid direction.
+        else if(possibleDestinationPosition % 8 == 7) { //If the queen is in the last column (8th)
+            if(direction == -7 || direction == 9) valid = false; // If the queen is trying to move in the bottom right diagonal or top right diagonal, it is not a valid direction.
+        }
+        else if(possibleDestinationPosition % 8 == 0) { // If the queen is in the first column AND
+            if(direction == -1) valid = false; // If the queen is trying to move in the left direction, it is not valid.
+        }
+        else if(possibleDestinationPosition % 8 == 7) { //If the queen is in the last column (8th)
+            if(direction == 1) valid = false; // If the bishop is trying to move in the right direction, it is not valid.
         }
         return valid;
     }

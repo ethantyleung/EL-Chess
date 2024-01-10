@@ -50,12 +50,12 @@ public class Rook extends Piece{
         return ImmutableList.copyOf(legalMoves);
     }
 
-    private boolean validRookDirection(final int direction, final int possiblePosition){
+    private boolean validRookDirection(final int direction, final int possibleDestinationPosition){
         boolean valid = true;
-        if(possiblePosition % 8 == 0) { // If the rook is in the first column AND
+        if(possibleDestinationPosition % 8 == 0) { // If the rook is in the first column AND
             if(direction == -1) valid = false; // If the rook is trying to move in the left direction, it is not valid.
         }
-        else if(possiblePosition % 8 == 7) { //If the rook is in the last column (8th)
+        else if(possibleDestinationPosition % 8 == 7) { //If the rook is in the last column (8th)
             if(direction == 1) valid = false; // If the bishop is trying to move in the right direction, it is not valid.
         }
         return valid;
