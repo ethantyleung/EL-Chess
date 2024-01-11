@@ -68,7 +68,7 @@ public class Queen extends Piece {
             if(direction == -1) valid = false; // If the queen is trying to move in the left direction, it is not valid.
         }
         else if(possibleDestinationPosition % 8 == 7) { //If the queen is in the last column (8th)
-            if(direction == 1) valid = false; // If the bishop is trying to move in the right direction, it is not valid.
+            if(direction == 1) valid = false; // If the queen is trying to move in the right direction, it is not valid.
         }
         return valid;
     }

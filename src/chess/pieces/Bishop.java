@@ -29,13 +29,13 @@ public class Bishop extends Piece{
         for(int i = 0; i < POSSIBLE_DIRECTIONS.length; i++) { // Iterate through each diagonal direction.
             
             int possibleDestinationPosition = this.position;
-            int offset = POSSIBLE_DIRECTIONS[i];
+            final int OFFSET = POSSIBLE_DIRECTIONS[i];
 
-            if(!validBishopDirection(offset, possibleDestinationPosition)) continue; // The offset does not work for certain edge cases.
+            if(!validBishopDirection(OFFSET, possibleDestinationPosition)) continue; // The OFFSET does not work for certain edge cases.
 
             while(Board.isValid(possibleDestinationPosition)){ // Run while the current tile is still on the board.
 
-                possibleDestinationPosition += offset; // Apply the offset.
+                possibleDestinationPosition += OFFSET; // Apply the OFFSET.
 
                 if(Board.isValid(possibleDestinationPosition)){ // Check if the tile is still valid.
 
@@ -50,7 +50,7 @@ public class Bishop extends Piece{
                         // Since the tile is occupied, there is a piece blocking further potential moves from being made in this direction. Thus, break.
                         break;
                     }
-                    if(!validBishopDirection(offset, possibleDestinationPosition)) break; // check if the loop has reached an invalid tile.
+                    if(!validBishopDirection(OFFSET, possibleDestinationPosition)) break; // check if the loop has reached an invalid tile.
                 }
             }            
         }
