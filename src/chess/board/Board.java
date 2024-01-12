@@ -20,9 +20,28 @@ public class Board {
 
     public static final int NUM_TILES = 64;
     private final List<Tile> gameBoard; // Use a list for immutability (an array cannot be made immutable and I do not want the board to be changed)
+    private final Collection<Piece> whitePieces;
+    private final Collection<Piece> blackPieces;
 
     private Board(BoardBuilder builder) {
         this.gameBoard = createGameBoard(builder);
+        this.whitePieces = calculateActivePieces(this.gameBoard, Type.WHITE);
+        this.blackPieces = calculateActivePieces(this.gameBoard, Type.BLACK);
+    }
+
+    private Collection<Piece> calculateActivePieces(final List<Tile> gameBoard, final Type type) {
+
+        final List<Piece> activePieces = new ArrayList<>();
+
+        for(final Tile tile : gameBoard) { // For each tile in the gameboard
+            if(tile.isTileOccupied()) {
+                final Piece piece = tile.getPiece();
+                if(piece.getType() == type) {
+                    activePieces.add(piece);
+                }
+            }
+        }
+        return ImmutableList.copyOf(activePieces);
     }
 
     public Tile getTile(final int tileCoordinate){
