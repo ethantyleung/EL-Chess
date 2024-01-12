@@ -17,8 +17,8 @@ public class Bishop extends Piece{
     private final static int[] POSSIBLE_DIRECTIONS = {-9, -7, 7, 9};
 
     // Base Bishop Constructor
-    private Bishop(final int position, final Type pieceType, final boolean firstMove){
-        super(position, pieceType, firstMove);
+    public Bishop(final Type pieceType, final int position){
+        super(pieceType, position, true);
     }
 
     @Override

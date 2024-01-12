@@ -16,17 +16,21 @@ public abstract class Piece {
     protected final boolean firstMove;
 
     // Piece Constructor.
-    protected Piece(final int position, final Type pieceType, final boolean firstMove){
-        this.position = position;
+    protected Piece(final Type pieceType, final int position, final boolean firstMove){
         this.pieceType = pieceType;
-        this.firstMove = false;
+        this.position = position;
+        this.firstMove = firstMove;
     }
 
     public Type getType(){
         return this.pieceType;
     }
 
-    public boolean getFirstMove() {
+    public int getPosition(){
+        return this.position;
+    }
+
+    public boolean isFirstMove() {
         return this.firstMove;
     }
 

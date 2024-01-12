@@ -15,8 +15,8 @@ public class King extends Piece {
 
     private static final int[] POSSIBLE_MOVES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    protected King(int position, Type pieceType, boolean firstMove) {
-        super(position, pieceType, firstMove);
+    public King(Type pieceType, int position) {
+        super(pieceType, position, true);
     }
 
     @Override

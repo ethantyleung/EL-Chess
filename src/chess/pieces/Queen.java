@@ -15,8 +15,8 @@ public class Queen extends Piece {
     
     private static final int[] POSSIBLE_DIRECTIONS = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    Queen(final int position, final Type pieceType, final boolean firstMove){
-        super(position, pieceType, firstMove);
+    public Queen(final Type pieceType, final int position){
+        super(pieceType, position, true);
     }
 
     @Override

@@ -15,8 +15,8 @@ public class Rook extends Piece{
     
     private final static int[] POSSIBLE_DIRECTIONS = {-8, -1, 1, 8};
 
-    private Rook(final int position, final Type pieceType, final boolean firstMove){
-        super(position, pieceType, firstMove);
+    public Rook(final Type pieceType, final int position){
+        super(pieceType, position, true);
     }
 
     @Override

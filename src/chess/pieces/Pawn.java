@@ -14,9 +14,10 @@ import chess.board.Move.BaseMove;
 public class Pawn extends Piece {
     
     private final static int[] POSSIBLE_DIRECTIONS = {8};
+    private boolean firstMove;
 
-    Pawn(final int position, final Type pieceType, final boolean firstMove) {
-        super(position, pieceType, firstMove);
+    public Pawn(final Type pieceType, final int position) {
+        super(pieceType, position, true);
     }
 
     @Override

@@ -21,8 +21,8 @@ public class Knight extends Piece {
     private final static int[] POSSIBLE_MOVES = {-17, -15, -10, 6, 6, 10, 15, 17};
 
     // Base Knight Constructor
-    private Knight(final int position, final Type pieceType, final boolean firstMove){
-        super(position, pieceType, firstMove);
+    public Knight(final Type pieceType, final int position){
+        super(pieceType, position, true);
     }
 
     @Override
