@@ -19,7 +19,7 @@ import chess.pieces.Rook;
 public class Board {
 
     public static final int NUM_TILES = 64;
-    private final List<Tile> gameBoard; // Use a list for immutability (an array cannot be made immutable and I do not want the board to be changed)
+    private final List<Tile> gameBoard; // Use a list for immutability (an array cannot be made immutable)
     private final Collection<Piece> whitePieces;
     private final Collection<Piece> blackPieces;
 
@@ -27,6 +27,8 @@ public class Board {
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = findActivePieces(this.gameBoard, Type.WHITE);
         this.blackPieces = findActivePieces(this.gameBoard, Type.BLACK);
+        final Collection<Move> whiteAllMoves = findAllLegalMoves(whitePieces);
+        final Collection<Move> blackAllMoves = findAllLegalMoves(blackPieces);
     }
 
     // Finds all the active pieces of a given type and returns a list of pieces still on the board.
@@ -45,6 +47,20 @@ public class Board {
             }
         }
         return ImmutableList.copyOf(activePieces);
+    }
+
+    // Finds all the legal moves using the collection of active pieces found in the findActivePieces function
+    private Collection<Move> findAllLegalMoves(final Collection<Piece> pieces) {
+
+        final List<Move> allMoves = new ArrayList<>();
+
+        for(Piece piece : pieces) { // For each piece in the collection of pieces.
+            allMoves.addAll(piece.calculateLegalMoves(this));
+        }
+
+        return ImmutableList.copyOf(allMoves);
+
+
     }
 
     // Returns a Tile object at a specified coordinate
