@@ -11,6 +11,9 @@ import chess.board.Move.AttackMove;
 import chess.board.Move.BaseMove;
 /* End of package imports*/
 
+/* The Rook subclass. Describes the Rook piece in Chess.
+*
+*/
 public class Rook extends Piece{
     
     private final static int[] POSSIBLE_DIRECTIONS = {-8, -1, 1, 8};

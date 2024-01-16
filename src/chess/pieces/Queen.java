@@ -11,6 +11,9 @@ import chess.board.Move.AttackMove;
 import chess.board.Move.BaseMove;
 /* End of package imports*/
 
+/* The Queen subclass. Describes the Queen piece in Chess.
+*
+*/
 public class Queen extends Piece {
     
     private static final int[] POSSIBLE_DIRECTIONS = {-9, -8, -7, -1, 1, 7, 8, 9};

@@ -14,6 +14,8 @@ public abstract class Tile {
 	
 	protected final int TILE_COORDINATE; // Every tile has a unique coordinate (0-63).
 
+	// A map with a set of 64 empty tiles mapped to each tile on the board.
+	// Useful for filling tiles that are unoccupied by a piece (mirrors the actual board).
 	private static final Map<Integer, EmptyTile> EMPTY_TILES = createEmptyTiles();
 	
 	//Tile Constructor
@@ -21,14 +23,19 @@ public abstract class Tile {
 		this.TILE_COORDINATE = tileCoordinate;
 	}
 	
-	// Function to create an occupied tile (a tile with a piece on it).
+	// Creates a tile to add to the game board (either an occupied tile or empty tile depending on the value of piece)
 	public static Tile createTile(final int tileCoordinate, final Piece piece){
-		// if there is no piece, create new occupied tile with the specified piece at coordinate, else return .
-		return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES.get(tileCoordinate);
+		if(piece != null) {
+			return new OccupiedTile(tileCoordinate, piece);
+		} else {
+			return EMPTY_TILES.get(tileCoordinate);
+		}
 	}
 
-	private static Map<Integer, EmptyTile> createEmptyTiles() {
 
+	// Fills the EMPTY_TILES map with empty tiles.
+	private static Map<Integer, EmptyTile> createEmptyTiles() {
+		
 		final Map<Integer, EmptyTile> EMPTY_MAP = new HashMap<>();
 
 		for(int i = 0; i < Board.NUM_TILES; i++){

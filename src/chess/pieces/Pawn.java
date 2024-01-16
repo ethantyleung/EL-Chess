@@ -11,9 +11,13 @@ import chess.board.Move.AttackMove;
 import chess.board.Move.BaseMove;
 /* End of package imports*/
 
+/* The Pawn subclass. Describes the Pawn piece in Chess.
+*
+*/
 public class Pawn extends Piece {
     
-    private final static int[] POSSIBLE_DIRECTIONS = {8};
+    // Pawns can only move forward (offset by 8), or attack diagonally. The attacks will be considered in a seperate case.
+    private final static int POSSIBLE_DIRECTION = 8;
     private boolean firstMove;
 
     public Pawn(final Type pieceType, final int position) {
@@ -26,24 +30,26 @@ public class Pawn extends Piece {
         final List<Move> legalMoves = new ArrayList<>();
         int possibleDestinationPosition = this.position;
 
-        for(int i = 0; i < POSSIBLE_DIRECTIONS.length; i++){
-            
-            final int offset = POSSIBLE_DIRECTIONS[i] * this.getType().getDirection();
-            possibleDestinationPosition += offset;
+        final int offset = POSSIBLE_DIRECTION * this.getType().getDirection(); // Accounts for directional change based on piece type
+        possibleDestinationPosition += offset; // Apply the offset (one tile forward)
 
-            if(!Board.isValid(possibleDestinationPosition)) continue;
+        if(!Board.isValid(possibleDestinationPosition)) {
 
-            // Checks if the pawn can move/jump
+            // Checks if the pawn can move to the current possibleDestinationPosition
             if(!board.getTile(possibleDestinationPosition).isTileOccupied()) {
                 legalMoves.add(new BaseMove(board, this, possibleDestinationPosition));
+
                 // In order for a Pawn to jump a tile, it must be its first move, and both tiles in front must be empty.
+                // It would be redundant to check if it is a valid tile (if it is a pawn's first move, it can only move to valid tiles on the board).
                 if(firstMove && !board.getTile(possibleDestinationPosition + offset).isTileOccupied()) {
                     legalMoves.add(new BaseMove(board, this, possibleDestinationPosition + offset));
                 }
+
             }
 
             // Checks if the pawn can attack (it can if either diagonal tile contains an opposing piece)
-            if(board.getTile(this.position + offset - 1).isTileOccupied()){ // Check LEFT
+            // Check LEFT
+            if(board.getTile(this.position + offset - 1).isTileOccupied()){
                 final Tile possibleDestinationTile = board.getTile(this.position + offset - 1);
                 if( (this.position) % 8 != 0) { // Edge case - first column
                     final Piece pieceAtDestination = possibleDestinationTile.getPiece();
@@ -53,7 +59,9 @@ public class Pawn extends Piece {
                     }
                 }
             }
-            if(board.getTile(this.position + offset + 1).isTileOccupied()){ // Check RIGHT
+
+            // Check RIGHT
+            if(board.getTile(this.position + offset + 1).isTileOccupied()){
                 final Tile possibleDestinationTile = board.getTile(this.position + offset + 1);
                 if( (this.position) % 8 != 7) { // Edge case - last column
                     final Piece pieceAtDestination = possibleDestinationTile.getPiece();

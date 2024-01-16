@@ -11,6 +11,9 @@ import chess.board.Move.AttackMove;
 import chess.board.Move.BaseMove;
 /* End of package imports*/
 
+/* The Bishop subclass. Describes the Bishop piece in Chess.
+*
+*/
 public class Bishop extends Piece{
     
     // Possible direction array that contains the required offset for a one tile move in each respective diagonal direction.

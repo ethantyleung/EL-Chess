@@ -11,6 +11,9 @@ import chess.board.Move.AttackMove;
 import chess.board.Move.BaseMove;
 /* End of package imports*/
 
+/* The King subclass. Describes the King piece in Chess.
+*
+*/
 public class King extends Piece {
 
     private static final int[] POSSIBLE_MOVES = {-9, -8, -7, -1, 1, 7, 8, 9};

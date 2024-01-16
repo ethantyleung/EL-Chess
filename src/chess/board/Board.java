@@ -1,12 +1,11 @@
 package chess.board;
 
+/* Start of package imports */
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
 import com.google.common.collect.ImmutableList;
-
 import chess.Type;
 import chess.pieces.Bishop;
 import chess.pieces.King;
@@ -15,6 +14,7 @@ import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
+/* End of package imports*/
 
 public class Board {
 
@@ -25,16 +25,19 @@ public class Board {
 
     private Board(BoardBuilder builder) {
         this.gameBoard = createGameBoard(builder);
-        this.whitePieces = calculateActivePieces(this.gameBoard, Type.WHITE);
-        this.blackPieces = calculateActivePieces(this.gameBoard, Type.BLACK);
+        this.whitePieces = findActivePieces(this.gameBoard, Type.WHITE);
+        this.blackPieces = findActivePieces(this.gameBoard, Type.BLACK);
     }
 
-    private Collection<Piece> calculateActivePieces(final List<Tile> gameBoard, final Type type) {
+    // Finds all the active pieces of a given type and returns a list of pieces still on the board.
+    // This will be useful for calculating all the legal moves in the board's current state to check for illegal moves.
+    // e.g. King cannot move to an attacked tile.
+    private Collection<Piece> findActivePieces(final List<Tile> gameBoard, final Type type) {
 
         final List<Piece> activePieces = new ArrayList<>();
 
         for(final Tile tile : gameBoard) { // For each tile in the gameboard
-            if(tile.isTileOccupied()) {
+            if(tile.isTileOccupied()) { // For every occupied tile that matches the type, add it to the list
                 final Piece piece = tile.getPiece();
                 if(piece.getType() == type) {
                     activePieces.add(piece);
@@ -44,11 +47,13 @@ public class Board {
         return ImmutableList.copyOf(activePieces);
     }
 
+    // Returns a Tile object at a specified coordinate
     public Tile getTile(final int tileCoordinate){
         return gameBoard.get(tileCoordinate);
     }
     
-    public static boolean isValid(int coordinate){
+    // Checks if the given coordinate is a valid coordinate (i.e. between 0-63)
+    public static boolean isValid(final int coordinate){
         return coordinate >= 0 && coordinate < NUM_TILES;
     }
 
@@ -62,8 +67,8 @@ public class Board {
     }
 
     public static Board createStandardBoard() {
-    final BoardBuilder builder = new BoardBuilder();
-        // Black Layout
+        final BoardBuilder builder = new BoardBuilder();
+        // Set all the black pieces in the default chess positions
         builder.setPiece(new Rook(Type.BLACK, 0));
         builder.setPiece(new Knight(Type.BLACK, 1));
         builder.setPiece(new Bishop(Type.BLACK, 2));
@@ -81,7 +86,7 @@ public class Board {
         builder.setPiece(new Pawn(Type.BLACK, 14));
         builder.setPiece(new Pawn(Type.BLACK, 15));
         
-        // White Layout
+        // Set all the white pieces in the default chess positions (white side)
         builder.setPiece(new Pawn(Type.WHITE, 48));
         builder.setPiece(new Pawn(Type.WHITE, 49));
         builder.setPiece(new Pawn(Type.WHITE, 50));
@@ -116,9 +121,10 @@ public class Board {
         public BoardBuilder() {
         }
 
+        // Function to set pieces on the game board
         public BoardBuilder setPiece(final Piece piece) {
             this.boardConfig.put(piece.getPosition(), piece);
-            return this;
+            return this; // Return pointer to the current object being built.
         }
 
         public BoardBuilder setMoveMaker(final Type nextMoveMaker) {

@@ -14,6 +14,7 @@ public abstract class Move {
         this.destination = destination;
     }
     
+
     public static final class BaseMove extends Move {
         
         public BaseMove(final Board board, final Piece movedPiece, final int destination){
@@ -22,6 +23,7 @@ public abstract class Move {
 
     }
 
+    
     public static final class AttackMove extends Move {
         
         final Piece attackedPiece;
