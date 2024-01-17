@@ -23,7 +23,7 @@ public class Rook extends Piece{
     }
 
     @Override
-    public Collection<Move> calculateLegalMoves(Board board) {
+    public Collection<Move> calculateLegalMoves(final Board board) {
 
         final List<Move> legalMoves = new ArrayList<>();
         int possibleDestinationPosition;
@@ -53,6 +53,16 @@ public class Rook extends Piece{
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public Piece movePiece(final Move move) {
+        return new King(move.getMovedPiece().getType(), move.getDestinationPosition());
+    }
+
+    @Override
+    public String toString() {
+        return "R";
+    }
+
     private boolean validRookDirection(final int direction, final int possibleDestinationPosition){
         boolean valid = true;
         if(possibleDestinationPosition % 8 == 0) { // If the rook is in the first column AND
@@ -63,10 +73,4 @@ public class Rook extends Piece{
         }
         return valid;
     }
-
-    @Override
-    public String toString() {
-        return "R";
-    }
-
 }

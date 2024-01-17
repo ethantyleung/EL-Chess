@@ -23,7 +23,7 @@ public class King extends Piece {
     }
 
     @Override
-    public Collection<Move> calculateLegalMoves(Board board) {
+    public Collection<Move> calculateLegalMoves(final Board board) {
         
         final List<Move> legalMoves = new ArrayList<>();
 
@@ -54,6 +54,16 @@ public class King extends Piece {
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public Piece movePiece(final Move move) {
+        return new King(move.getMovedPiece().getType(), move.getDestinationPosition());
+    }
+
+    @Override
+    public String toString() {
+        return "K";
+    }
+
     private boolean validKingDirection(final int direction, final int possibleDestinationPosition){
         boolean valid = true;
         if(possibleDestinationPosition % 8 == 0) { // If the king is in the first column AND
@@ -70,10 +80,4 @@ public class King extends Piece {
         }
         return valid;
     }
-
-    @Override
-    public String toString() {
-        return "K";
-    }
-
 }

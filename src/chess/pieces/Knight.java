@@ -51,6 +51,11 @@ public class Knight extends Piece {
         return ImmutableList.copyOf(legalMoves);
     }
     
+    @Override
+    public Piece movePiece(final Move move) {
+        return new Knight(move.getMovedPiece().getType(), move.getDestinationPosition());
+    }
+
     private boolean notValidKnightMove(final int coordinate, final int possibleDestinationPosition){
         // Taking the mod of a linear position value returns the column - 1. 
         // Checks if the difference between the two columns is greater than two.

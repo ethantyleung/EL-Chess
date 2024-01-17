@@ -23,7 +23,7 @@ public class Queen extends Piece {
     }
 
     @Override
-    public Collection<Move> calculateLegalMoves(Board board) {
+    public Collection<Move> calculateLegalMoves(final Board board) {
         
         final List<Move> legalMoves = new ArrayList<>();
 
@@ -59,6 +59,16 @@ public class Queen extends Piece {
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public Piece movePiece(final Move move) {
+        return new King(move.getMovedPiece().getType(), move.getDestinationPosition());
+    }
+
+    @Override
+    public String toString() {
+        return "Q";
+    }
+
     private boolean validQueenDirection(final int direction, final int possibleDestinationPosition){
         boolean valid = true;
         if(possibleDestinationPosition % 8 == 0) { // If the queen is in the first column AND
@@ -74,10 +84,5 @@ public class Queen extends Piece {
             if(direction == 1) valid = false; // If the queen is trying to move in the right direction, it is not valid.
         }
         return valid;
-    }
-
-    @Override
-    public String toString() {
-        return "Q";
     }
 }

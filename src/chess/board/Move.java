@@ -17,6 +17,10 @@ public abstract class Move {
         this.destination = destination;
     }
 
+    public Piece getMovedPiece() {
+        return this.movedPiece;
+    }
+
     public int getDestinationPosition() {
         return this.destination;
     }
@@ -37,6 +41,7 @@ public abstract class Move {
 
             // Leave all the pieces that are not the movedPiece unchanged.
             for(final Piece piece : board.currentPlayer().findActivePieces()) {
+                // TODO override hashcode and equals method
                 if(!this.movedPiece.equals(piece)) {
                     boardBuilder.setPiece(piece);
                 }
@@ -45,7 +50,7 @@ public abstract class Move {
                 boardBuilder.setPiece(piece);
             }
 
-            boardBuilder.setPiece(null); // Setting the moved piece in the new location
+            boardBuilder.setPiece(this.movedPiece.movePiece(this)); // Setting the moved piece in the new location
             boardBuilder.setMoveMaker(board.currentPlayer().getOpposingPlayer().getType()); // set the next move maker
 
             return boardBuilder.build();

@@ -76,6 +76,11 @@ public class Pawn extends Piece {
     }
 
     @Override
+    public Piece movePiece(final Move move) {
+        return new Pawn(move.getMovedPiece().getType(), move.getDestinationPosition());
+    }
+
+    @Override
     public String toString() {
         return "P";
     }

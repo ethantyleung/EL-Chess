@@ -25,7 +25,7 @@ public class Bishop extends Piece{
     }
 
     @Override
-    public Collection<Move> calculateLegalMoves(Board board) {
+    public Collection<Move> calculateLegalMoves(final Board board) {
         
         final List<Move> legalMoves = new ArrayList<>();
         
@@ -60,6 +60,16 @@ public class Bishop extends Piece{
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public String toString() {
+        return "B";
+    }
+
+    @Override
+    public Piece movePiece(final Move move) {
+        return new Bishop(move.getMovedPiece().getType(), move.getDestinationPosition());
+    }
+
     private boolean validBishopDirection(final int direction, final int possibleDestinationPosition){
         boolean valid = true;
         if(possibleDestinationPosition % 8 == 0) { // If the bishop is in the first column AND
@@ -69,11 +79,6 @@ public class Bishop extends Piece{
             if(direction == -7 || direction == 9) valid = false; // If the bishop is trying to move in the bottom right diagonal or top right diagonal, it is not a valid direction.
         }
         return valid;
-    }
-
-    @Override
-    public String toString() {
-        return "B";
     }
 
 }

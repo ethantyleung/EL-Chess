@@ -40,6 +40,9 @@ public abstract class Piece {
         return this.firstMove;
     }
 
+    // Move a piece and return the piece with the updated position
+    public abstract Piece movePiece(final Move move); 
+
     // Every piece will have a set of legal moves, which will be implemented differently depending on the piece.
     // Param - takes in the current state of the gameboard
     public abstract Collection<Move> calculateLegalMoves(final Board board);
