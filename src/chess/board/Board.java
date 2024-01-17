@@ -3,6 +3,7 @@ package chess.board;
 /* Start of package imports */
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import com.google.common.collect.ImmutableList;
@@ -127,6 +128,17 @@ public class Board {
         return builder.build();
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder boardOutput = new StringBuilder();
+        for(int i = 0; i < NUM_TILES; i++) {
+            final String tileOutput = this.gameBoard.get(i).toString();
+            boardOutput.append(String.format("%3s",tileOutput)); // Format the string so that a minimum of 3 characters are added (for nice spacing), if the string is not three characters long, add spaces in front until it is
+            if( (i+1) % 8 == 0) boardOutput.append("\n");
+        }
+        return boardOutput.toString();
+    }
+
     // Using builder design pattern to create our gameboard.
     // The builder maps each piece to a corresponding tile coordinate on the chess board.
     public static class BoardBuilder {
@@ -135,6 +147,7 @@ public class Board {
         Type nextMoveMaker;
 
         public BoardBuilder() {
+            boardConfig = new HashMap<>();
         }
 
         // Function to set pieces on the game board

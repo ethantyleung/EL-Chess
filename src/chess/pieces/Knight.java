@@ -57,4 +57,9 @@ public class Knight extends Piece {
         return ( Math.abs( (coordinate % 8) - (possibleDestinationPosition % 8)) > 2);
     }
 
+    @Override
+    public String toString() {
+        return "N";
+    }
+
 }

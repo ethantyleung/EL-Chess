@@ -35,7 +35,7 @@ public class Rook extends Piece{
 
             if(!validRookDirection(offset, possibleDestinationPosition)) continue;
 
-            while(Board.isValid(possibleDestinationPosition)) {
+            while(Board.isValid(possibleDestinationPosition + offset)) {
                 possibleDestinationPosition += offset;
                 final Tile possibleDestinationTile = board.getTile(possibleDestinationPosition);
                 if(!possibleDestinationTile.isTileOccupied()){
@@ -62,6 +62,11 @@ public class Rook extends Piece{
             if(direction == 1) valid = false; // If the bishop is trying to move in the right direction, it is not valid.
         }
         return valid;
+    }
+
+    @Override
+    public String toString() {
+        return "R";
     }
 
 }

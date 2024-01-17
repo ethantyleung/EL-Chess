@@ -45,9 +45,9 @@ public abstract class Tile {
 		return ImmutableMap.copyOf(EMPTY_MAP);
 	}
 
-	public abstract boolean isTileOccupied();
+	public abstract boolean isTileOccupied(); // It will be useful to know which tiles are occupied
 	
-	public abstract Piece getPiece();
+	public abstract Piece getPiece(); // It will be useful to know what piece is occupying the tile
 	
 	public static final class EmptyTile extends Tile{
 		
@@ -65,6 +65,12 @@ public abstract class Tile {
 			return null;
 		}
 		
+		@Override
+		public String toString() {
+			return " - ";
+		}
+
+
 	}
 	
 	public static final class OccupiedTile extends Tile {
@@ -84,6 +90,15 @@ public abstract class Tile {
 		@Override
 		public Piece getPiece() {
 			return this.pieceOnTile;
+		}
+
+		@Override
+		public String toString() {
+			if(this.pieceOnTile.getType().isBlack()) {
+				return this.pieceOnTile.toString() + "'"; // Identifier to differentiate between black and white pieces
+			} else {
+				return this.pieceOnTile.toString() + "`";
+			}
 		}
 		
 	}

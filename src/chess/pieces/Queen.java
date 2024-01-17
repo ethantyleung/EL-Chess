@@ -76,4 +76,8 @@ public class Queen extends Piece {
         return valid;
     }
 
+    @Override
+    public String toString() {
+        return "Q";
+    }
 }

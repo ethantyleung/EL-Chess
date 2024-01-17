@@ -71,4 +71,9 @@ public class King extends Piece {
         return valid;
     }
 
+    @Override
+    public String toString() {
+        return "K";
+    }
+
 }
