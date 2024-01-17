@@ -30,15 +30,15 @@ public class Board {
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
 
-    private Board(BoardBuilder builder) {
+    private Board(final BoardBuilder builder) {
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = findActivePieces(this.gameBoard, Type.WHITE);
         this.blackPieces = findActivePieces(this.gameBoard, Type.BLACK);
-        final Collection<Move> allWhiteMoves = findAllLegalMoves(whitePieces);
-        final Collection<Move> allBlackMoves = findAllLegalMoves(blackPieces);
+        final Collection<Move> allWhiteMoves = findAllLegalMoves(this.whitePieces);
+        final Collection<Move> allBlackMoves = findAllLegalMoves(this.blackPieces);
         this.whitePlayer = new WhitePlayer(this, allWhiteMoves, allBlackMoves);
         this.blackPlayer = new BlackPlayer(this, allWhiteMoves, allBlackMoves);
-        this.currentPlayer = null; // TODO Implement
+        this.currentPlayer = builder.nextMoveMaker.chooseNextPlayer(this.blackPlayer,this.whitePlayer);
     }
 
     // Getter method for all the white pieces
