@@ -67,10 +67,9 @@ public abstract class Tile {
 		
 		@Override
 		public String toString() {
-			return " - ";
+			return " - "; // Empty tiles are represented as dashes in the terminal
 		}
-
-
+		
 	}
 	
 	public static final class OccupiedTile extends Tile {
@@ -100,7 +99,5 @@ public abstract class Tile {
 				return this.pieceOnTile.toString() + "`";
 			}
 		}
-		
 	}
-	
 }

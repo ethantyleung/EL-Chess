@@ -15,6 +15,9 @@ import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
+import chess.players.BlackPlayer;
+import chess.players.Player;
+import chess.players.WhitePlayer;
 /* End of package imports*/
 
 public class Board {
@@ -22,14 +25,42 @@ public class Board {
     public static final int NUM_TILES = 64;
     private final List<Tile> gameBoard; // Use a list for immutability (an array cannot be made immutable)
     private final Collection<Piece> whitePieces;
+    private final WhitePlayer whitePlayer;
     private final Collection<Piece> blackPieces;
+    private final BlackPlayer blackPlayer;
+    private final Player currentPlayer;
 
     private Board(BoardBuilder builder) {
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = findActivePieces(this.gameBoard, Type.WHITE);
         this.blackPieces = findActivePieces(this.gameBoard, Type.BLACK);
-        final Collection<Move> whiteAllMoves = findAllLegalMoves(whitePieces);
-        final Collection<Move> blackAllMoves = findAllLegalMoves(blackPieces);
+        final Collection<Move> allWhiteMoves = findAllLegalMoves(whitePieces);
+        final Collection<Move> allBlackMoves = findAllLegalMoves(blackPieces);
+        this.whitePlayer = new WhitePlayer(this, allWhiteMoves, allBlackMoves);
+        this.blackPlayer = new BlackPlayer(this, allWhiteMoves, allBlackMoves);
+        this.currentPlayer = null; // TODO Implement
+    }
+
+    // Getter method for all the white pieces
+    public Collection<Piece> getWhitePieces() {
+        return this.whitePieces;
+    }
+
+    // Getter method for all the black pieces
+    public Collection<Piece> getBlackPieces() {
+        return this.blackPieces;
+    }
+
+    public Player getWhitePlayer() {
+        return this.whitePlayer;
+    }
+
+    public Player getBlackPlayer() {
+        return this.blackPlayer;
+    }
+
+    public Player currentPlayer() {
+        return this.currentPlayer;
     }
 
     // Finds all the active pieces of a given type and returns a list of pieces still on the board.
@@ -127,7 +158,8 @@ public class Board {
         // Return built board
         return builder.build();
     }
-
+    
+    // Overrided toString method to print out the board.
     @Override
     public String toString() {
         final StringBuilder boardOutput = new StringBuilder();

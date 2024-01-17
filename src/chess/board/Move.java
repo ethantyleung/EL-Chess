@@ -13,7 +13,12 @@ public abstract class Move {
         this.movedPiece = movedPiece;
         this.destination = destination;
     }
-    
+
+    public int getDestinationPosition() {
+        return this.destination;
+    }
+
+    public abstract Board execute();
 
     public static final class BaseMove extends Move {
         
@@ -21,8 +26,12 @@ public abstract class Move {
             super(board, movedPiece, destination);
         }
 
-    }
+        @Override
+        public Board execute() {
+            return null;
+        }
 
+    }
     
     public static final class AttackMove extends Move {
         
@@ -31,6 +40,11 @@ public abstract class Move {
         public AttackMove(final Board board, final Piece movedPiece, final int destination, final Piece attackedPiece) {
             super(board, movedPiece, destination);
             this.attackedPiece = attackedPiece;
+        }
+
+        @Override
+        public Board execute() {
+            return null;
         }
 
 
