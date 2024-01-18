@@ -17,12 +17,43 @@ public abstract class Piece {
     protected final int position;
     protected final Type pieceType;
     protected final boolean firstMove;
+    private final int cachedHashCode;
 
     // Piece Constructor.
     protected Piece(final Type pieceType, final int position, final boolean firstMove){
         this.pieceType = pieceType;
         this.position = position;
         this.firstMove = firstMove;
+        this.cachedHashCode = computeHashCode();
+    }
+
+    // Overriding the default equals method to check equality of two Piece objects by attributes instead of reference.
+    @Override
+    public boolean equals(final Object o) {
+        if(this == o) { // If they are referring to the same object, then return true
+            return true;
+        }
+        if(!(o instanceof Piece)) { // If o is not an instance of piece, it can't be equal
+            return false;
+        }
+        final Piece otherPiece = (Piece) o;
+        // If the type, position, firstmove and piece-type of the two objects match, they are equal.
+        return this.getType() == otherPiece.getType() && this.getPosition() == otherPiece.getPosition()
+               && this.isFirstMove() == otherPiece.isFirstMove() && this.toString().equals(otherPiece.toString());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.cachedHashCode;
+    }
+
+    // Implementation of the overrided hashCode (the equals method was overrided so we must also override the hashCode method) 
+    private int computeHashCode() {
+        int result = pieceType.hashCode();
+        result = 31 * result + pieceType.hashCode();
+        result = 31 * result + position;
+        result = 31 * result + (firstMove ? 1 : 0);
+        return result;
     }
 
     // Getter method for pieceType
