@@ -31,7 +31,7 @@ public abstract class Player {
 
     // Find all the enemy moves that are attacking a specific tile coordinate
     // Useful for seeing if a player is in check, checkmate or if there is a stalemate.
-    private static Collection<Move> calculateAttacksOnTile(final int position, final Collection<Move> allOpposingMoves) {
+    protected static Collection<Move> calculateAttacksOnTile(final int position, final Collection<Move> allOpposingMoves) {
         
         List<Move> attacksOnTile = new ArrayList<>();
 
@@ -141,5 +141,7 @@ public abstract class Player {
     public abstract Type getType();
 
     public abstract Player getOpposingPlayer();
+
+    protected abstract Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentsLegals);
 
 }

@@ -63,6 +63,8 @@ public class Board {
         return this.currentPlayer;
     }
 
+
+
     // Finds all the active pieces of a given type and returns a list of pieces still on the board.
     // This will be useful for calculating all the legal moves in the board's current state to check for illegal moves.
     // e.g. King cannot move to an attacked tile.
@@ -177,6 +179,7 @@ public class Board {
 
         Map<Integer, Piece> boardConfig; // Key - Specific Tile position, Value - Chess Piece on that Tile
         Type nextMoveMaker;
+        Pawn enPassantPawn;
 
         public BoardBuilder() {
             boardConfig = new HashMap<>();
@@ -197,6 +200,8 @@ public class Board {
             return new Board(this);
         }
 
+        public void setEnPassantPawn(final Pawn enPassantPawn) {
+            this.enPassantPawn = enPassantPawn;
+        }
     }
-
 }
