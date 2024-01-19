@@ -4,6 +4,7 @@ import chess.board.Board.BoardBuilder;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import chess.pieces.Queen;
+import chess.pieces.Rook;
 import chess.players.Player;
 
 // The move class provides the implentation to execute a move when it is made.
@@ -201,25 +202,82 @@ public abstract class Move {
 
     // Special move type: castling
     static abstract class CastleMove extends Move {
+
+        protected final Rook castleRook;
+        protected final int castleRookDestination;
+        protected final int castleRookInitialPos;
         
-        public CastleMove(final Board board, final Piece movedPiece, final int destination){
+        public CastleMove(final Board board, final Piece movedPiece, final int destination, final Rook castleRook,
+                          final int castleRookDestination, final int castleRookInitialPos){
             super(board, movedPiece, destination);
+            this.castleRook = castleRook;
+            this.castleRookDestination = castleRookDestination;
+            this.castleRookInitialPos = castleRookInitialPos;
+        }
+
+        public Rook getCastleRook() {
+            return this.castleRook;
+        }
+
+        @Override
+        public boolean isCastling() {
+            return true;
+        }
+
+        @Override
+        public Board execute() {
+
+            final BoardBuilder boardBuilder = new BoardBuilder();
+
+            for(final Piece piece : this.board.currentPlayer().findActivePieces()) {
+                if(!this.movedPiece.equals(piece)) {
+                    boardBuilder.setPiece(piece);
+                }
+            }
+            for(final Piece piece : this.board.currentPlayer().getOpposingPlayer().findActivePieces()) {
+                if(!this.movedPiece.equals(piece)) {
+                    boardBuilder.setPiece(piece);
+                }
+            }
+
+            boardBuilder.setPiece(this.movedPiece.movePiece(this));
+            boardBuilder.setPiece(new Rook(this.castleRook.getType(), this.castleRookDestination, false));
+            boardBuilder.setMoveMaker(this.board.currentPlayer().getOpposingPlayer().getType());
+            return boardBuilder.build();
         }
 
     }
 
     // Castling on the kingside
     public static final class KingSideCastle extends CastleMove {
-        public KingSideCastle(final Board board, final Piece movedPiece, final int destination){
-            super(board, movedPiece, destination);
+
+        public KingSideCastle(final Board board, final Piece movedPiece, final int destination, final Rook castleRook,
+                              final int castleRookDestination, final int castleRookInitialPos){
+            super(board, movedPiece, destination, castleRook, castleRookDestination, castleRookInitialPos);
         }
+
+        // Convention for king side castle
+        @Override
+        public String toString() {
+            return "O-O";
+        }
+
     }
 
     // Castling on the queenside
     public static final class QueenSideCastle extends CastleMove {
-        public QueenSideCastle(final Board board, final Piece movedPiece, final int destination){
-            super(board, movedPiece, destination);
+
+        public QueenSideCastle(final Board board, final Piece movedPiece, final int destination, final Rook castleRook,
+                               final int castleRookDestination, final int castleRookInitialPos){
+            super(board, movedPiece, destination, castleRook, castleRookDestination, castleRookInitialPos);
         }
+
+        // Convention for queen side castle
+        @Override
+        public String toString() {
+            return "O-O-O";
+        }
+
     }
 
     // Invalid move type null move

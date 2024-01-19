@@ -22,6 +22,10 @@ public class Rook extends Piece{
         super(pieceType, position, true);
     }
 
+    public Rook(final Type pieceType, final int positon, final boolean firstMove) {
+        super(pieceType, positon, firstMove);
+    }
+
     @Override
     public Collection<Move> calculateLegalMoves(final Board board) {
 
