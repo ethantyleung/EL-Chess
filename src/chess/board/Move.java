@@ -3,9 +3,7 @@ package chess.board;
 import chess.board.Board.BoardBuilder;
 import chess.pieces.Pawn;
 import chess.pieces.Piece;
-import chess.pieces.Queen;
 import chess.pieces.Rook;
-import chess.players.Player;
 
 // The move class provides the implentation to execute a move when it is made.
 // i.e. it will create an entirely new board in the state that the board will be in after a move is executed. (the board is immutable)
