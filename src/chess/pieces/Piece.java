@@ -49,7 +49,7 @@ public abstract class Piece {
 
     // Implementation of the overrided hashCode (the equals method was overrided so we must also override the hashCode method) 
     private int computeHashCode() {
-        int result = pieceType.hashCode();
+        int result = 17;
         result = 31 * result + pieceType.hashCode();
         result = 31 * result + position;
         result = 31 * result + (firstMove ? 1 : 0);

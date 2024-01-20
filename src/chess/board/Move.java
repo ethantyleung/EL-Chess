@@ -251,9 +251,9 @@ public abstract class Move {
     // Castling on the kingside
     public static final class KingSideCastle extends CastleMove {
 
-        public KingSideCastle(final Board board, final Piece movedPiece, final int destination, final Rook castleRook,
+        public KingSideCastle(final Board board, final Piece movedPiece, final int destination, final Rook rook,
                               final int castleRookDestination, final int castleRookInitialPos){
-            super(board, movedPiece, destination, castleRook, castleRookDestination, castleRookInitialPos);
+            super(board, movedPiece, destination, rook, castleRookDestination, castleRookInitialPos);
         }
 
         // Convention for king side castle

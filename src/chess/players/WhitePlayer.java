@@ -11,6 +11,7 @@ import chess.board.Board;
 import chess.board.Move;
 import chess.board.Tile;
 import chess.pieces.Piece;
+import chess.pieces.Rook;
 
 public class WhitePlayer extends Player {
     
@@ -41,7 +42,7 @@ public class WhitePlayer extends Player {
     4. The king does not pass through or finish on a square that is attacked by an enemy piece.
     */
     @Override
-    protected Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentsLegals) {
+    protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals, final Collection<Move> opponentsLegals) {
 
         final List<Move> kingCastles = new ArrayList<>();
 
@@ -53,8 +54,8 @@ public class WhitePlayer extends Player {
                 if(rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove() && rookTile.getPiece().toString().equals("R")) {
                     if(Player.calculateAttacksOnTile(61, opponentsLegals).isEmpty()
                     && Player.calculateAttacksOnTile(62, opponentsLegals).isEmpty()) { // Not moving through attacked tiles.
-                        // TODO Implement later
-                        kingCastles.add(null);
+                        kingCastles.add(new Move.KingSideCastle(this.board, this.theKingPiece, 62, (Rook)rookTile.getPiece(),
+                                                                61, 63));
                     }
                 }
             }
@@ -69,8 +70,8 @@ public class WhitePlayer extends Player {
                     if(Player.calculateAttacksOnTile(59, opponentsLegals).isEmpty()
                     && Player.calculateAttacksOnTile(58, opponentsLegals).isEmpty()
                     && Player.calculateAttacksOnTile(57, opponentsLegals).isEmpty()) { // Not moving through attacked tiles.
-                        // TODO Implement later
-                        kingCastles.add(null);
+                        kingCastles.add(new Move.QueenSideCastle(this.board, this.theKingPiece, 58, (Rook)rookTile.getPiece(),
+                                                                59, 56));
                     }
                 }
             }

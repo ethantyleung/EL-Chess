@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 import chess.Type;
 import chess.board.Board;
@@ -25,7 +26,7 @@ public abstract class Player {
     public Player(final Board board, final Collection<Move> allLegalMoves, final Collection<Move> allOpposingMoves) {
         this.board = board;
         this.theKingPiece = setKingPiece();
-        this.allLegalMoves = allLegalMoves;
+        this.allLegalMoves = ImmutableList.copyOf(Iterables.concat(allLegalMoves, calculateKingCastles(allLegalMoves, allOpposingMoves)));
         this.isChecked = !Player.calculateAttacksOnTile(this.theKingPiece.getPosition(), allOpposingMoves).isEmpty();
     }
 

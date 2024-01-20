@@ -11,6 +11,7 @@ import chess.board.Board;
 import chess.board.Move;
 import chess.board.Tile;
 import chess.pieces.Piece;
+import chess.pieces.Rook;
 
 public class BlackPlayer extends Player {
     
@@ -41,7 +42,7 @@ public class BlackPlayer extends Player {
     4. The king does not pass through or finish on a square that is attacked by an enemy piece.
     */
     @Override
-    protected Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentsLegals) {
+    protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals, final Collection<Move> opponentsLegals) {
 
         final List<Move> kingCastles = new ArrayList<>();
 
@@ -53,8 +54,8 @@ public class BlackPlayer extends Player {
                 if(rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove() && rookTile.getPiece().toString().equals("R")) {
                     if(Player.calculateAttacksOnTile(5, opponentsLegals).isEmpty()
                     && Player.calculateAttacksOnTile(6, opponentsLegals).isEmpty()) { // Not moving through attacked tiles.
-                        // TODO Implement later
-                        kingCastles.add(null);
+                        kingCastles.add(new Move.KingSideCastle(this.board, this.theKingPiece, 6, (Rook)rookTile.getPiece(),
+                                                                5, 7));
                     }
                 }
             }
@@ -68,9 +69,9 @@ public class BlackPlayer extends Player {
                 if(rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove() && rookTile.getPiece().toString().equals("R")) {
                     if(Player.calculateAttacksOnTile(1, opponentsLegals).isEmpty()
                     && Player.calculateAttacksOnTile(2, opponentsLegals).isEmpty()
-                    && Player.calculateAttacksOnTile(3, opponentsLegals).isEmpty()) { // Not moving through attacked tiles.
-                        // TODO Implement later
-                        kingCastles.add(null);
+                    && Player.calculateAttacksOnTile(3, opponentsLegals).isEmpty()) { // Not moving through attacked tiles.                        kingCastles.add(null);
+                        kingCastles.add(new Move.QueenSideCastle(this.board, this.theKingPiece, 2, (Rook)rookTile.getPiece(),
+                        3, 0));
                     }
                 }
             }
