@@ -37,7 +37,7 @@ public class Board {
         final Collection<Move> allWhiteMoves = findAllLegalMoves(this.whitePieces);
         final Collection<Move> allBlackMoves = findAllLegalMoves(this.blackPieces);
         this.whitePlayer = new WhitePlayer(this, allWhiteMoves, allBlackMoves);
-        this.blackPlayer = new BlackPlayer(this, allWhiteMoves, allBlackMoves);
+        this.blackPlayer = new BlackPlayer(this, allBlackMoves, allWhiteMoves);
         this.currentPlayer = builder.nextMoveMaker.chooseNextPlayer(this.blackPlayer,this.whitePlayer);
     }
 

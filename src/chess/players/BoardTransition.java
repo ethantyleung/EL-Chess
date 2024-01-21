@@ -22,4 +22,8 @@ public class BoardTransition {
         return this.moveStatus;
     }
 
+    public Board getTransitioningBoard() {
+        return this.transitioningBoard;
+    }
+
 }

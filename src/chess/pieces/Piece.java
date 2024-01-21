@@ -37,6 +37,7 @@ public abstract class Piece {
             return false;
         }
         final Piece otherPiece = (Piece) o;
+        
         // If the type, position, firstmove and piece-type of the two objects match, they are equal.
         return this.getType() == otherPiece.getType() && this.getPosition() == otherPiece.getPosition()
                && this.isFirstMove() == otherPiece.isFirstMove() && this.toString().equals(otherPiece.toString());

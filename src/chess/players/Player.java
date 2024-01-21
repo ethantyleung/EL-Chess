@@ -51,6 +51,7 @@ public abstract class Player {
     // If a move was successfully made, return a BoardTransition object, which will wrap the board state being transitioned to
     public BoardTransition makeMove(final Move move) {
         if(!checkLegalMove(move)) { // If the move isn't legal, no changes to the board will be made
+            System.out.println("This move is illegal.");
             return new BoardTransition(this.board, move, MoveStatus.ILLEGAL);
         }
 

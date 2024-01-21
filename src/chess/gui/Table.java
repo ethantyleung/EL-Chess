@@ -3,16 +3,27 @@ package chess.gui;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import com.google.common.collect.Lists;
+
 import chess.board.Board;
+import chess.board.Move;
+import chess.board.Tile;
+import chess.board.Move.MoveFactory;
+import chess.pieces.Piece;
+import chess.players.BoardTransition;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import static javax.swing.SwingUtilities.*;
 
 public class Table {
     
@@ -32,7 +43,12 @@ public class Table {
     private final JFrame mainFrame;
     private final JMenuBar menuBar;
     private final BoardPanel boardPanel;
-    private final Board chessboard;
+
+    // Player Control Elements
+    private Board chessboard;
+    private Tile sourceTile;
+    private Tile finalTile;
+    private Piece movedPiece;
 
     public Table() {
         // Configure the main fame
@@ -99,6 +115,17 @@ public class Table {
             setPreferredSize(BOARD_PANEL_DIMENSION);
             validate();
         }
+
+        public void drawBoard(final Board board) {
+            this.removeAll();
+            for(final TilePanel tilePanel : boardTiles) {
+                tilePanel.drawTile(board);
+                add(tilePanel);
+            }
+            validate();
+            repaint();
+        }
+
     }
 
     // JPanels that represent the tiles on the board.
@@ -112,7 +139,67 @@ public class Table {
             setPreferredSize(TILE_PANEL_DIMENSION);
             setTileColour();
             setTileIcon(chessboard);
+
+            addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(final MouseEvent e) {
+                    if(isRightMouseButton(e)) { // Right clicks reset user actions
+                        resetState();
+                    } else if (isLeftMouseButton(e)) { // Left clicks to initiate moves
+                        if(sourceTile == null) { // If the user has not currently selected a tile, set the source tile and piece being moved
+                            sourceTile = chessboard.getTile(tilePosition);
+                            movedPiece = sourceTile.getPiece();
+                            if(movedPiece == null) { // Checks if there was actually a piece at the tile selected
+                                sourceTile = null; // If not, then don't set the source tile to anything (the player clicked on an empty tile)
+                            }
+                        } else { // If the user is already hovering on a piece and selected a new destination, try to execute the move.
+                            finalTile = chessboard.getTile(tilePosition);
+                            final Move move = Move.MoveFactory.createMove(chessboard, sourceTile.getTileCoordinate(), finalTile.getTileCoordinate());
+                            final BoardTransition transition = chessboard.currentPlayer().makeMove(move);
+                            if(transition.getMoveStatus().isCompleted()) {
+                                chessboard = transition.getTransitioningBoard();
+                                // TODO Create a move log by adding the executed move to a list
+                            }
+                            resetState();
+                        }
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                boardPanel.drawBoard(chessboard);
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    
+                }
+                
+            });
             validate();
+        }
+
+        public void drawTile(final Board board) {
+            setTileColour();
+            setTileIcon(board);
+            validate();
+            repaint();
         }
 
         // Set the color of the tiles according to a normal chess board (I used brown/light brown)
@@ -136,6 +223,12 @@ public class Table {
                     e.printStackTrace();
                 }
             }
+        }
+
+        private void resetState() {
+            sourceTile = null;
+            movedPiece = null;
+            finalTile = null;
         }
     }
 }

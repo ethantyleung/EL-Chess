@@ -35,7 +35,7 @@ public abstract class Move {
 
     @Override
     public int hashCode(){
-        int result = 1;
+        int result = 17;
         result = 31 * result + this.movedPiece.getPosition();
         result = 31 * result + movedPiece.hashCode();
         result = 31 * result + this.destination;

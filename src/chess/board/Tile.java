@@ -32,6 +32,10 @@ public abstract class Tile {
 		}
 	}
 
+	public int getTileCoordinate() {
+		return this.TILE_COORDINATE;
+	}
+
 
 	// Fills the EMPTY_TILES map with empty tiles.
 	private static Map<Integer, EmptyTile> createEmptyTiles() {

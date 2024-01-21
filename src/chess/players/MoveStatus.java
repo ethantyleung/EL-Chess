@@ -3,21 +3,24 @@ package chess.players;
 public enum MoveStatus {
     DONE {
         @Override
-        boolean isCompleted() {
+        public boolean isCompleted() {
+            // DEBUG: System.out.println("Movestatus: COMPLETED.");
             return true;
         }
     },
     ILLEGAL {
         @Override
-        boolean isCompleted() {
+        public boolean isCompleted() {
+            // DEBUG: System.out.println("Movestatus: ILLEGAL.");
             return false;
         }
     },
     LEAVES_PLAYER_IN_CHECK {
         @Override
-        boolean isCompleted() {
+        public boolean isCompleted() {
+            // DEBUG: System.out.println("Movestatus: LEAVES PLAYER IN CHECK.");
             return false;
         }
     };
-    abstract boolean isCompleted();
+    public abstract boolean isCompleted();
 }
