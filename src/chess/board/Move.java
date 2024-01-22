@@ -9,9 +9,9 @@ import chess.pieces.Rook;
 // i.e. it will create an entirely new board in the state that the board will be in after a move is executed. (the board is immutable)
 public abstract class Move {
     
-    final Board board;
-    final Piece movedPiece;
-    final int destination;
+    protected final Board board;
+    protected final Piece movedPiece;
+    protected final int destination;
 
     public static final Move NULL_MOVE = new NullMove();
 
@@ -19,6 +19,12 @@ public abstract class Move {
         this.board = board;
         this.movedPiece = movedPiece;
         this.destination = destination;
+    }
+
+    private Move(final Board board, final int destination) {
+        this.board = board;
+        this.destination = destination;
+        this.movedPiece = null;
     }
 
     @Override
@@ -30,7 +36,8 @@ public abstract class Move {
             return false;
         }
         final Move otherMove = (Move) o;
-        return this.getDestinationPosition() == otherMove.getDestinationPosition() && this.getMovedPiece() == otherMove.getMovedPiece();
+        return this.getDestinationPosition() == otherMove.getDestinationPosition() && this.getMovedPiece() == otherMove.getMovedPiece()
+            && getCurrentPosition() == otherMove.getCurrentPosition();
     }
 
     @Override
@@ -72,7 +79,6 @@ public abstract class Move {
 
         // Leave all the pieces that are not the movedPiece unchanged.
         for(final Piece piece : board.currentPlayer().findActivePieces()) {
-            // TODO override hashcode and equals method
             if(!this.movedPiece.equals(piece)) {
                 boardBuilder.setPiece(piece);
             }
@@ -92,6 +98,16 @@ public abstract class Move {
         
         public BaseMove(final Board board, final Piece movedPiece, final int destination){
             super(board, movedPiece, destination);
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            return this == o || o instanceof BaseMove && super.equals(o);
+        }
+
+        @Override
+        public String toString(){
+            return movedPiece.getType().toString() + board.getCodeAtPosition(this.destination);
         }
 
     }

@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import static javax.swing.SwingUtilities.*;
 
-public class Table {
+public class Game {
     
     // Predefined dimensions for each frame & panel.
     private final static Dimension MAIN_FRAME_DIMENSION = new Dimension(600, 600);
@@ -53,8 +53,9 @@ public class Table {
     private Tile finalTile;
     private Piece movedPiece;
     private BoardDirection boardDirection;
+    private boolean highlightLegalMoves;
 
-    public Table() {
+    public Game() {
         // Configure the main fame
         this.mainFrame = new JFrame("ELChess");
         this.mainFrame.setLayout(new BorderLayout());
@@ -66,6 +67,7 @@ public class Table {
         this.menuBar = new JMenuBar();
         createMenuBar(menuBar);
         this.mainFrame.setJMenuBar(this.menuBar);
+        this.highlightLegalMoves = false;
 
         // Create standard board
         chessboard = Board.createStandardBoard();
@@ -121,6 +123,22 @@ public class Table {
             }
         });
         preferencesMenu.add(flipBoardItem);
+
+        preferencesMenu.addSeparator();
+
+        final JCheckBoxMenuItem legalMoveHightlighterCheckbox = new JCheckBoxMenuItem("Highlight Moves", false);
+
+        legalMoveHightlighterCheckbox.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                highlightLegalMoves = legalMoveHightlighterCheckbox.isSelected();
+            }
+            
+        });
+
+        preferencesMenu.add(legalMoveHightlighterCheckbox);
+
         return preferencesMenu;
     }
 
@@ -151,6 +169,38 @@ public class Table {
         abstract BoardDirection opposite();
     }
 
+    // MoveLog class to keep track of a history of moves
+    public static class MoveLog {
+        private final List<Move> moveHistory;
+
+        MoveLog() {
+            this.moveHistory = new ArrayList<>();
+        }
+
+        public List<Move> getMoves() {
+            return this.moveHistory;
+        }
+
+        public void addMove(final Move move) {
+            this.moveHistory.add(move);
+        }
+
+        public int size() {
+            return this.moveHistory.size();
+        }
+
+        public void clear() {
+            this.moveHistory.clear();
+        }
+
+        public Move removeMove(final int index) {
+            return this.moveHistory.remove(index);
+        }
+
+        public boolean removeMove(final Move move) {
+            return this.moveHistory.remove(move);
+        }
+    }
 
     // JPanel that represents the main game board
     private class BoardPanel extends JPanel {
@@ -177,7 +227,6 @@ public class Table {
             validate();
             repaint();
         }
-
     }
 
     // JPanels that represent the tiles on the board.
@@ -222,27 +271,21 @@ public class Table {
                         });
                     }
                 }
-
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    
                 }
-                
             });
             validate();
         }
@@ -280,7 +323,7 @@ public class Table {
 
         // Highlight the legal moves
         private void highlightLegalMoves(final Board board) {
-            if(true) {
+            if(highlightLegalMoves) {
                 for(final Move move : pieceLegalMoves(board)) { // For every move that is in the piece's set of legal moves
                     if(move.getDestinationPosition() == this.tilePosition && !(move instanceof AttackMove)) { // Check if the move's destination position is the current tile
                         try {

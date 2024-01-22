@@ -20,9 +20,12 @@ public class Knight extends Piece {
     // Possible Moves array contains offsets required to move Knight in every possible direction (L-Shaped).
     private final static int[] POSSIBLE_MOVES = {-17, -15, -10, 6, 6, 10, 15, 17};
 
+    // Arbitrary value to organize pieces in move log
+    private final static int KNIGHT_VALUE = 1;
+
     // Base Knight Constructor
     public Knight(final Type pieceType, final int position){
-        super(pieceType, position, true);
+        super(pieceType, position, true, KNIGHT_VALUE);
     }
 
     @Override
@@ -66,5 +69,4 @@ public class Knight extends Piece {
     public String toString() {
         return "N";
     }
-
 }

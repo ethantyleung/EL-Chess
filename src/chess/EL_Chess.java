@@ -1,7 +1,7 @@
 package chess;
 
 import chess.board.Board;
-import chess.gui.Table;
+import chess.gui.Game;
 
 public class EL_Chess {
     
@@ -11,7 +11,7 @@ public class EL_Chess {
 
         System.out.println(board);
 
-        Table table = new Table();
+        Game game = new Game();
     }
 
 }

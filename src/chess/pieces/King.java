@@ -16,16 +16,20 @@ import chess.board.Move.BaseMove;
 */
 public class King extends Piece {
 
+    // Possible direction array that contains the required offset for a one tile move in each respective diagonal direction.
     private static final int[] POSSIBLE_MOVES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
+    // Arbitrary value to organize pieces in move log
+    private final static int KING_VALUE = 3;
+    
     // Base King Constructor
     public King(final Type pieceType, final int position) {
-        super(pieceType, position, true);
+        super(pieceType, position, true, KING_VALUE);
     }
 
     // King constructor with specified firstMove status
     public King(final Type pieceType, final int position, final boolean firstMove) {
-        super(pieceType, position, firstMove);
+        super(pieceType, position, firstMove, KING_VALUE);
     }
 
     @Override

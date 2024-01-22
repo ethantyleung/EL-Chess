@@ -9,7 +9,9 @@ import chess.Type;
 import chess.board.*;
 import chess.board.Move.AttackMove;
 import chess.board.Move.BaseMove;
+import chess.board.Move.PawnAttackMove;
 /* End of package imports*/
+import chess.board.Move.PawnJump;
 
 /* The Pawn subclass. Describes the Pawn piece in Chess.
 *
@@ -19,13 +21,15 @@ public class Pawn extends Piece {
     // Pawns can only move forward (offset by 8), or attack diagonally. The attacks will be considered in a seperate case.
     private final static int POSSIBLE_DIRECTION = 8;
 
+    // Arbitrary value to organize pieces in move log
+    private final static int PAWN_VALUE = 0;
 
     public Pawn(final Type pieceType, final int position) {
-        super(pieceType, position, true);
+        super(pieceType, position, true, PAWN_VALUE);
     }
 
     public Pawn(final Type pieceType, final int position, final boolean firstMove) {
-        super(pieceType, position, firstMove);
+        super(pieceType, position, firstMove, PAWN_VALUE);
     }
 
     @Override
@@ -45,7 +49,7 @@ public class Pawn extends Piece {
                 // It would be redundant to check if it is a valid tile (if it is a pawn's first move, it can only move to valid tiles on the board).
                 if(firstMove && !board.getTile(possibleDestinationPosition + offset).isTileOccupied()) {
                     // DEBUG: System.out.println("Pawns can jump.");
-                    legalMoves.add(new BaseMove(board, this, possibleDestinationPosition + offset));
+                    legalMoves.add(new PawnJump(board, this, possibleDestinationPosition + offset));
                 }
 
             }
@@ -58,7 +62,7 @@ public class Pawn extends Piece {
                     final Piece pieceAtDestination = possibleDestinationTile.getPiece();
                     final Type typeAtDestination = pieceAtDestination.getType();
                     if(this.getType() != typeAtDestination){
-                        legalMoves.add(new AttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
+                        legalMoves.add(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
                     }
                 }
             }
@@ -70,7 +74,7 @@ public class Pawn extends Piece {
                     final Piece pieceAtDestination = possibleDestinationTile.getPiece();
                     final Type typeAtDestination = pieceAtDestination.getType();
                     if(this.getType() != typeAtDestination){
-                        legalMoves.add(new AttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
+                        legalMoves.add(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
                     }
                 }
             }

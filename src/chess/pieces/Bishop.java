@@ -19,9 +19,12 @@ public class Bishop extends Piece{
     // Possible direction array that contains the required offset for a one tile move in each respective diagonal direction.
     private final static int[] POSSIBLE_DIRECTIONS = {-9, -7, 7, 9};
 
+    // Arbitrary value to organize pieces in move log
+    private final static int BISHOP_VALUE = 2;
+
     // Base Bishop Constructor
     public Bishop(final Type pieceType, final int position){
-        super(pieceType, position, true);
+        super(pieceType, position, true, BISHOP_VALUE);
     }
 
     @Override
@@ -80,5 +83,4 @@ public class Bishop extends Piece{
         }
         return valid;
     }
-
 }

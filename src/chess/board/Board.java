@@ -2,7 +2,9 @@ package chess.board;
 
 /* Start of package imports */
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,8 @@ public class Board {
     private final Collection<Piece> blackPieces;
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
+    public static final List<String> ALGEBRAIC_NOTATION = initializeAlgebraicNotation();
+    public static final Map<String, Integer> CODE_TO_POSITION = initializeCodeToPositionMap();
 
     private Board(final BoardBuilder builder) {
         this.gameBoard = createGameBoard(builder);
@@ -63,7 +67,33 @@ public class Board {
         return this.currentPlayer;
     }
 
+    private static List<String> initializeAlgebraicNotation() {
+        return Collections.unmodifiableList(Arrays.asList(
+                "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8",
+                "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
+                "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6",
+                "a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5",
+                "a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4",
+                "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3",
+                "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",
+                "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1"));
+    }
 
+    private static Map<String, Integer> initializeCodeToPositionMap() {
+        final Map<String, Integer> positionToCoordinate = new HashMap<>();
+        for (int i = 0; i < NUM_TILES; i++) {
+            positionToCoordinate.put(ALGEBRAIC_NOTATION.get(i), i);
+        }
+        return Collections.unmodifiableMap(positionToCoordinate);
+    }
+
+    public static int getPositionAtCode(final String code) {
+        return CODE_TO_POSITION.get(code);
+    }
+
+    public static String getCodeAtPosition(final int position) {
+        return ALGEBRAIC_NOTATION.get(position);
+    }
 
     // Finds all the active pieces of a given type and returns a list of pieces still on the board.
     // This will be useful for calculating all the legal moves in the board's current state to check for illegal moves.

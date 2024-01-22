@@ -18,12 +18,14 @@ public abstract class Piece {
     protected final Type pieceType;
     protected final boolean firstMove;
     private final int cachedHashCode;
+    private final int PIECE_VALUE;
 
     // Piece Constructor.
-    protected Piece(final Type pieceType, final int position, final boolean firstMove){
+    protected Piece(final Type pieceType, final int position, final boolean firstMove, final int PIECE_VALUE){
         this.pieceType = pieceType;
         this.position = position;
         this.firstMove = firstMove;
+        this.PIECE_VALUE = PIECE_VALUE;
         this.cachedHashCode = computeHashCode();
     }
 
@@ -37,7 +39,7 @@ public abstract class Piece {
             return false;
         }
         final Piece otherPiece = (Piece) o;
-        
+
         // If the type, position, firstmove and piece-type of the two objects match, they are equal.
         return this.getType() == otherPiece.getType() && this.getPosition() == otherPiece.getPosition()
                && this.isFirstMove() == otherPiece.isFirstMove() && this.toString().equals(otherPiece.toString());
@@ -72,11 +74,17 @@ public abstract class Piece {
         return this.firstMove;
     }
 
+    public int getPieceValue() {
+        return PIECE_VALUE;
+    }
+
     // Move a piece and return the piece with the updated position
     public abstract Piece movePiece(final Move move); 
 
     // Every piece will have a set of legal moves, which will be implemented differently depending on the piece.
     // Param - takes in the current state of the gameboard
     public abstract Collection<Move> calculateLegalMoves(final Board board);
+
+
 
 }

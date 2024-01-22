@@ -18,12 +18,15 @@ public class Rook extends Piece{
     
     private final static int[] POSSIBLE_DIRECTIONS = {-8, -1, 1, 8};
 
+    // Arbitrary value to organize pieces in move log
+    private final static int ROOK_VALUE = 3;
+
     public Rook(final Type pieceType, final int position){
-        super(pieceType, position, true);
+        super(pieceType, position, true, ROOK_VALUE);
     }
 
     public Rook(final Type pieceType, final int positon, final boolean firstMove) {
-        super(pieceType, positon, firstMove);
+        super(pieceType, positon, firstMove, ROOK_VALUE);
     }
 
     @Override

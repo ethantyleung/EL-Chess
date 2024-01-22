@@ -16,10 +16,14 @@ import chess.board.Move.BaseMove;
 */
 public class Queen extends Piece {
     
+    // Possible direction array that contains the required offset for a one tile move in each respective diagonal direction.
     private static final int[] POSSIBLE_DIRECTIONS = {-9, -8, -7, -1, 1, 7, 8, 9};
 
+    // Arbitrary value to organize pieces in move log
+    private final static int QUEEN_VALUE = 4;
+
     public Queen(final Type pieceType, final int position){
-        super(pieceType, position, true);
+        super(pieceType, position, true, QUEEN_VALUE);
     }
 
     @Override
