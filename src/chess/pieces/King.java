@@ -18,8 +18,14 @@ public class King extends Piece {
 
     private static final int[] POSSIBLE_MOVES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
-    public King(Type pieceType, int position) {
+    // Base King Constructor
+    public King(final Type pieceType, final int position) {
         super(pieceType, position, true);
+    }
+
+    // King constructor with specified firstMove status
+    public King(final Type pieceType, final int position, final boolean firstMove) {
+        super(pieceType, position, firstMove);
     }
 
     @Override
@@ -56,7 +62,7 @@ public class King extends Piece {
 
     @Override
     public Piece movePiece(final Move move) {
-        return new King(move.getMovedPiece().getType(), move.getDestinationPosition());
+        return new King(move.getMovedPiece().getType(), move.getDestinationPosition(), false);
     }
 
     @Override

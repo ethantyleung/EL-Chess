@@ -61,7 +61,7 @@ public class Queen extends Piece {
 
     @Override
     public Piece movePiece(final Move move) {
-        return new King(move.getMovedPiece().getType(), move.getDestinationPosition());
+        return new Queen(move.getMovedPiece().getType(), move.getDestinationPosition());
     }
 
     @Override

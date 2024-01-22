@@ -10,6 +10,7 @@ import com.google.common.collect.Iterables;
 import chess.Type;
 import chess.board.Board;
 import chess.board.Move;
+import chess.board.Move.KingSideCastle;
 import chess.pieces.King;
 import chess.pieces.Piece;
 
@@ -74,7 +75,6 @@ public abstract class Player {
         if(!attacksOnKing.isEmpty()) {
             return new BoardTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
         }
-
         return new BoardTransition(transitioningBoard, move, MoveStatus.DONE);
     }
 

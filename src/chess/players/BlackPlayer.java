@@ -62,14 +62,14 @@ public class BlackPlayer extends Player {
         }
 
         if(this.getPlayerKing().isFirstMove() && !this.isChecked()) { // The king hasn't moved and isn't checked
-            // White Queen Side Castle
+            // Black Queen Side Castle
             if(!this.board.getTile(1).isTileOccupied() && !this.board.getTile(2).isTileOccupied() && !this.board.getTile(3).isTileOccupied()) {
                 final Tile rookTile = this.board.getTile(0);
                 // Checks if there is a piece at the edge and it is a rook and hasn't moved.
                 if(rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove() && rookTile.getPiece().toString().equals("R")) {
                     if(Player.calculateAttacksOnTile(1, opponentsLegals).isEmpty()
                     && Player.calculateAttacksOnTile(2, opponentsLegals).isEmpty()
-                    && Player.calculateAttacksOnTile(3, opponentsLegals).isEmpty()) { // Not moving through attacked tiles.                        kingCastles.add(null);
+                    && Player.calculateAttacksOnTile(3, opponentsLegals).isEmpty()) { // Not moving through attacked tiles.
                         kingCastles.add(new Move.QueenSideCastle(this.board, this.theKingPiece, 2, (Rook)rookTile.getPiece(),
                         3, 0));
                     }

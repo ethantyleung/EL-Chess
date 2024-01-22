@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import chess.board.Board;
 import chess.board.Move;
 import chess.board.Tile;
+import chess.board.Move.AttackMove;
 import chess.board.Move.MoveFactory;
 import chess.pieces.Piece;
 import chess.players.BoardTransition;
@@ -22,6 +23,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import static javax.swing.SwingUtilities.*;
 
@@ -49,6 +52,7 @@ public class Table {
     private Tile sourceTile;
     private Tile finalTile;
     private Piece movedPiece;
+    private BoardDirection boardDirection;
 
     public Table() {
         // Configure the main fame
@@ -69,12 +73,14 @@ public class Table {
         // Build the board
         this.boardPanel = new BoardPanel();
         this.mainFrame.add(this.boardPanel, BorderLayout.CENTER);
+        this.boardDirection = BoardDirection.DEFAULT;
 
         this.mainFrame.setVisible(true);
     }
 
     private void createMenuBar(final JMenuBar menuBar) {
         menuBar.add(createFileMenu());
+        menuBar.add(createPreferencesMenu());
     }
 
     // Allow users to load previous games
@@ -101,6 +107,51 @@ public class Table {
         return fileMenu;
     }
 
+    // Another menu bar that contains more features
+    private JMenu createPreferencesMenu() {
+        final JMenu preferencesMenu = new JMenu("Preferences");
+
+        // A flip board item that lets users flip the board
+        final JMenuItem flipBoardItem = new JMenuItem("Flip Board");
+        flipBoardItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                boardDirection = boardDirection.opposite();
+                boardPanel.drawBoard(chessboard);
+            }
+        });
+        preferencesMenu.add(flipBoardItem);
+        return preferencesMenu;
+    }
+
+    // Enumerator class that describes the orientation of the board currently displayed
+    public enum BoardDirection {
+        DEFAULT {
+            @Override
+            List<TilePanel> traverse(List<TilePanel> boardTiles) {
+                return boardTiles;
+            }
+            @Override
+            BoardDirection opposite() {
+                return FLIPPED;
+            }
+        },
+        FLIPPED {
+            @Override
+            List<TilePanel> traverse(List<TilePanel> boardTiles) {
+                return Lists.reverse(boardTiles);
+            }
+            @Override
+            BoardDirection opposite() {
+                return DEFAULT;
+            }
+        };
+
+        abstract List<TilePanel> traverse(final List<TilePanel> boardTiles);
+        abstract BoardDirection opposite();
+    }
+
+
     // JPanel that represents the main game board
     private class BoardPanel extends JPanel {
         final List<TilePanel> boardTiles;
@@ -116,9 +167,10 @@ public class Table {
             validate();
         }
 
+        // Update the new state of the tilePanels in boardPanel whenever a move is made
         public void drawBoard(final Board board) {
             this.removeAll();
-            for(final TilePanel tilePanel : boardTiles) {
+            for(final TilePanel tilePanel : boardDirection.traverse(boardTiles)) {
                 tilePanel.drawTile(board);
                 add(tilePanel);
             }
@@ -198,6 +250,7 @@ public class Table {
         public void drawTile(final Board board) {
             setTileColour();
             setTileIcon(board);
+            highlightLegalMoves(board);
             validate();
             repaint();
         }
@@ -223,6 +276,29 @@ public class Table {
                     e.printStackTrace();
                 }
             }
+        }
+
+        // Highlight the legal moves
+        private void highlightLegalMoves(final Board board) {
+            if(true) {
+                for(final Move move : pieceLegalMoves(board)) { // For every move that is in the piece's set of legal moves
+                    if(move.getDestinationPosition() == this.tilePosition && !(move instanceof AttackMove)) { // Check if the move's destination position is the current tile
+                        try {
+                            add(new JLabel(new ImageIcon(ImageIO.read(new File("art/Misc/blackdot.png"))))); // try to add a circle to the tile
+                        } catch(Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        // Calculate a specific piece's legal moves, used to highlight possible moves
+        private Collection<Move> pieceLegalMoves(final Board board) {
+            if(movedPiece != null && movedPiece.getType() == board.currentPlayer().getType()) {
+                return movedPiece.calculateLegalMoves(board);
+            }
+            return Collections.emptyList();
         }
 
         private void resetState() {

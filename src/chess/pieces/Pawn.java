@@ -24,6 +24,10 @@ public class Pawn extends Piece {
         super(pieceType, position, true);
     }
 
+    public Pawn(final Type pieceType, final int position, final boolean firstMove) {
+        super(pieceType, position, firstMove);
+    }
+
     @Override
     public Collection<Move> calculateLegalMoves(final Board board) {
 
@@ -54,7 +58,7 @@ public class Pawn extends Piece {
                     final Piece pieceAtDestination = possibleDestinationTile.getPiece();
                     final Type typeAtDestination = pieceAtDestination.getType();
                     if(this.getType() != typeAtDestination){
-                        legalMoves.add(new AttackMove(board, this, possibleDestinationPosition, pieceAtDestination));
+                        legalMoves.add(new AttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
                     }
                 }
             }
@@ -66,7 +70,7 @@ public class Pawn extends Piece {
                     final Piece pieceAtDestination = possibleDestinationTile.getPiece();
                     final Type typeAtDestination = pieceAtDestination.getType();
                     if(this.getType() != typeAtDestination){
-                        legalMoves.add(new AttackMove(board, this, possibleDestinationPosition, pieceAtDestination));
+                        legalMoves.add(new AttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
                     }
                 }
             }
@@ -76,7 +80,7 @@ public class Pawn extends Piece {
 
     @Override
     public Piece movePiece(final Move move) {
-        return new Pawn(move.getMovedPiece().getType(), move.getDestinationPosition());
+        return new Pawn(move.getMovedPiece().getType(), move.getDestinationPosition(), false);
     }
 
     @Override

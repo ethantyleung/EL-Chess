@@ -228,7 +228,7 @@ public abstract class Move {
             final BoardBuilder boardBuilder = new BoardBuilder();
 
             for(final Piece piece : this.board.currentPlayer().findActivePieces()) {
-                if(!this.movedPiece.equals(piece)) {
+                if(!this.movedPiece.equals(piece) && piece.getPosition() != this.castleRookInitialPos) {
                     boardBuilder.setPiece(piece);
                 }
             }
