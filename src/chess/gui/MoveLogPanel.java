@@ -3,10 +3,8 @@ package chess.gui;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 
-import static chess.gui.Game.*;
 import chess.board.Board;
 import chess.board.Move;
 import chess.gui.Game.MoveLog;
@@ -122,7 +120,7 @@ public class MoveLogPanel extends JPanel {
             }
             if(column == 0) {
                 currentRow.setWhiteMove((String)aValue);
-                fireTableCellUpdated(row, row);
+                fireTableRowsInserted(row, row);
             } else if(column == 1) {
                 currentRow.setBlackMove((String)aValue);
                 fireTableCellUpdated(row, column);

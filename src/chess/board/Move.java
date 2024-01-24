@@ -112,7 +112,8 @@ public abstract class Move {
 
         @Override
         public String toString(){
-            return movedPiece.getType().toString() + Board.getCodeAtPosition(this.destination);
+            if(movedPiece.toString().equals("P")) return Board.getCodeAtPosition(this.destination);
+            return movedPiece.toString() + Board.getCodeAtPosition(this.destination);
         }
     }
     

@@ -9,14 +9,12 @@ import chess.board.Board;
 import chess.board.Move;
 import chess.board.Tile;
 import chess.board.Move.AttackMove;
-import chess.board.Move.MoveFactory;
 import chess.pieces.Piece;
 import chess.players.BoardTransition;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
