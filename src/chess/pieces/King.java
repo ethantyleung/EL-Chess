@@ -20,7 +20,7 @@ public class King extends Piece {
     private static final int[] POSSIBLE_MOVES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     // Arbitrary value to organize pieces in move log
-    private final static int KING_VALUE = 3;
+    private final static int KING_VALUE = 5;
     
     // Base King Constructor
     public King(final Type pieceType, final int position) {

@@ -16,7 +16,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 
 import com.google.common.primitives.Ints;

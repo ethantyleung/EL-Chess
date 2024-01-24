@@ -31,7 +31,7 @@ import static javax.swing.SwingUtilities.*;
 public class Game {
     
     // Predefined dimensions for each frame & panel.
-    private final static Dimension MAIN_FRAME_DIMENSION = new Dimension(600, 600);
+    private final static Dimension MAIN_FRAME_DIMENSION = new Dimension(700, 600);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
 
@@ -46,6 +46,9 @@ public class Game {
     private final JFrame mainFrame;
     private final JMenuBar menuBar;
     private final BoardPanel boardPanel;
+    private final MoveLogPanel moveLogPanel;
+    private final CapturedPiecesSideBar capturedPiecesSideBar;
+    private final MoveLog moveLog;
 
     // Player Control Elements
     private Board chessboard;
@@ -72,10 +75,20 @@ public class Game {
         // Create standard board
         chessboard = Board.createStandardBoard();
 
+        // Build the Move Log Panel
+        this.moveLogPanel = new MoveLogPanel();
+        this.moveLog = new MoveLog();
+        this.moveLogPanel.setVisible(true);
+
+        // Build the captured pieces side bar
+        this.capturedPiecesSideBar = new CapturedPiecesSideBar();
+
         // Build the board
         this.boardPanel = new BoardPanel();
         this.mainFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.boardDirection = BoardDirection.DEFAULT;
+        this.mainFrame.add(this.capturedPiecesSideBar, BorderLayout.WEST);
+        this.mainFrame.add(this.moveLogPanel, BorderLayout.EAST);
 
         this.mainFrame.setVisible(true);
     }
@@ -155,6 +168,7 @@ public class Game {
             }
         },
         FLIPPED {
+            // Can flip the board by simply traversing through the reversed list
             @Override
             List<TilePanel> traverse(List<TilePanel> boardTiles) {
                 return Lists.reverse(boardTiles);
@@ -259,13 +273,15 @@ public class Game {
                             final BoardTransition transition = chessboard.currentPlayer().makeMove(move);
                             if(transition.getMoveStatus().isCompleted()) {
                                 chessboard = transition.getTransitioningBoard();
-                                // TODO Create a move log by adding the executed move to a list
+                                moveLog.addMove(move);
                             }
                             resetState();
                         }
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
+                                moveLogPanel.redo(chessboard, moveLog);
+                                capturedPiecesSideBar.logReset(moveLog);
                                 boardPanel.drawBoard(chessboard);
                             }
                         });

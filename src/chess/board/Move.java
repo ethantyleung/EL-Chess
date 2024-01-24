@@ -5,6 +5,7 @@ import chess.pieces.Pawn;
 import chess.pieces.Piece;
 import chess.pieces.Rook;
 
+
 // The move class provides the implentation to execute a move when it is made.
 // i.e. it will create an entirely new board in the state that the board will be in after a move is executed. (the board is immutable)
 public abstract class Move {
@@ -12,6 +13,7 @@ public abstract class Move {
     protected final Board board;
     protected final Piece movedPiece;
     protected final int destination;
+    protected final boolean isFirstMove;
 
     public static final Move NULL_MOVE = new NullMove();
 
@@ -19,12 +21,14 @@ public abstract class Move {
         this.board = board;
         this.movedPiece = movedPiece;
         this.destination = destination;
+        this.isFirstMove = movedPiece.isFirstMove();
     }
 
     private Move(final Board board, final int destination) {
         this.board = board;
         this.destination = destination;
         this.movedPiece = null;
+        this.isFirstMove = false;
     }
 
     @Override
@@ -46,6 +50,7 @@ public abstract class Move {
         result = 31 * result + this.movedPiece.getPosition();
         result = 31 * result + movedPiece.hashCode();
         result = 31 * result + this.destination;
+        result = result + (isFirstMove ? 1 : 0);
         return result;
     }
 
@@ -107,9 +112,8 @@ public abstract class Move {
 
         @Override
         public String toString(){
-            return movedPiece.getType().toString() + board.getCodeAtPosition(this.destination);
+            return movedPiece.getType().toString() + Board.getCodeAtPosition(this.destination);
         }
-
     }
     
     // An attacking move to an occupied tile.
@@ -183,6 +187,11 @@ public abstract class Move {
             super(board, movedPiece, destination);
         }
 
+        @Override
+        public String toString() {
+            return Board.getCodeAtPosition(this.destination);
+        }
+
     }
 
     // A pawn jump (pawn moving two tiles)
@@ -210,6 +219,11 @@ public abstract class Move {
             boardBuilder.setEnPassantPawn(movedPawn);
             boardBuilder.setMoveMaker(this.board.currentPlayer().getOpposingPlayer().getType());
             return boardBuilder.build();
+        }
+
+        @Override
+        public String toString() {
+            return Board.getCodeAtPosition(this.destination);
         }
 
     }  
@@ -297,7 +311,7 @@ public abstract class Move {
     // Invalid move type null move
     public static final class NullMove extends Move {
         public NullMove(){
-            super(null, null, -1);
+            super(null,-1);
         }
 
         @Override

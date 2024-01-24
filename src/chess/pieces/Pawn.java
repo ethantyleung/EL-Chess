@@ -7,7 +7,6 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import chess.Type;
 import chess.board.*;
-import chess.board.Move.AttackMove;
 import chess.board.Move.BaseMove;
 import chess.board.Move.PawnAttackMove;
 /* End of package imports*/
