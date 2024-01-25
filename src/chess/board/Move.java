@@ -146,7 +146,13 @@ public abstract class Move {
 
         @Override
         public Board execute() {
-            return null;
+            final BoardBuilder builder = new BoardBuilder();
+            this.board.currentPlayer().findActivePieces().stream().filter(piece -> !this.movedPiece.equals(piece)).forEach(builder::setPiece);
+            this.board.currentPlayer().getOpposingPlayer().findActivePieces().forEach(builder::setPiece);
+            builder.setPiece(this.movedPiece.movePiece(this));
+            builder.setMoveMaker(this.board.currentPlayer().getOpposingPlayer().getType());
+            builder.setMoveTransition(this);
+            return builder.build();
         }
 
         @Override
@@ -168,10 +174,6 @@ public abstract class Move {
             super(board, movedPiece, destination, attackedPiece);
         }
 
-        @Override
-        public Board execute() {
-            return null;
-        }
     }
 
     // The special move, en passant

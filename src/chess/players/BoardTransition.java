@@ -9,12 +9,12 @@ import chess.board.Move;
 public class BoardTransition {
 
     private final Board transitioningBoard;
-    private final Move move;
+    private final Move transitionMove;
     private final MoveStatus moveStatus;
 
     public BoardTransition(final Board transitioningBoard, final Move move, final MoveStatus moveStatus) {
         this.transitioningBoard = transitioningBoard;
-        this.move = move;
+        this.transitionMove = move;
         this.moveStatus = moveStatus;
     }
 
@@ -24,6 +24,10 @@ public class BoardTransition {
 
     public Board getTransitioningBoard() {
         return this.transitioningBoard;
+    }
+
+    public Move getTransitionMove() {
+        return this.transitionMove;
     }
 
 }

@@ -51,13 +51,13 @@ public class Queen extends Piece {
                     } else {
                         final Piece pieceAtDestination = possibleDestination.getPiece();
                         final Type typeAtDestination = pieceAtDestination.getType();
-                        if(this.pieceType != typeAtDestination) legalMoves.add(new AttackMove(board, pieceAtDestination, possibleDestinationPosition, pieceAtDestination));
+                        if(this.pieceType != typeAtDestination) legalMoves.add(new AttackMove(board, this, possibleDestinationPosition, pieceAtDestination));
                         // Since the tile is occupied, there is a piece blocking further potential moves from being made in this direction. Thus, break.
                         break;
                     }
                     if(!validQueenDirection(offset, possibleDestinationPosition)) break; // check if the loop has reached an invalid tile.
                 }
-            }            
+            }
         }
 
         return ImmutableList.copyOf(legalMoves);
@@ -76,16 +76,10 @@ public class Queen extends Piece {
     private boolean validQueenDirection(final int direction, final int possibleDestinationPosition){
         boolean valid = true;
         if(possibleDestinationPosition % 8 == 0) { // If the queen is in the first column AND
-            if(direction == 7 || direction == -9) valid = false; // If the queen is trying to move in the bottom left diagonal or top left diagonal, it is not a valid direction.
+            if(direction == 7 || direction == -9 || direction == -1) valid = false; // If the queen is trying to move in the bottom left diagonal or top left diagonal, it is not a valid direction.
         }
         else if(possibleDestinationPosition % 8 == 7) { //If the queen is in the last column (8th)
-            if(direction == -7 || direction == 9) valid = false; // If the queen is trying to move in the bottom right diagonal or top right diagonal, it is not a valid direction.
-        }
-        else if(possibleDestinationPosition % 8 == 0) { // If the queen is in the first column AND
-            if(direction == -1) valid = false; // If the queen is trying to move in the left direction, it is not valid.
-        }
-        else if(possibleDestinationPosition % 8 == 7) { //If the queen is in the last column (8th)
-            if(direction == 1) valid = false; // If the queen is trying to move in the right direction, it is not valid.
+            if(direction == -7 || direction == 9 || direction == 1) valid = false; // If the queen is trying to move in the bottom right diagonal or top right diagonal, it is not a valid direction.
         }
         return valid;
     }

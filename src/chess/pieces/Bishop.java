@@ -52,7 +52,7 @@ public class Bishop extends Piece{
                     } else {
                         final Piece pieceAtDestination = possibleDestination.getPiece();
                         final Type typeAtDestination = pieceAtDestination.getType();
-                        if(this.pieceType != typeAtDestination) legalMoves.add(new AttackMove(board, pieceAtDestination, possibleDestinationPosition, pieceAtDestination));
+                        if(this.pieceType != typeAtDestination) legalMoves.add(new AttackMove(board, this, possibleDestinationPosition, pieceAtDestination));
                         // Since the tile is occupied, there is a piece blocking further potential moves from being made in this direction. Thus, break.
                         break;
                     }

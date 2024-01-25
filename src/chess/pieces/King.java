@@ -56,7 +56,7 @@ public class King extends Piece {
                     final Piece pieceAtDestination = possibleDestination.getPiece();
                     final Type typeAtDestination = pieceAtDestination.getType();
                     if(this.pieceType != typeAtDestination) {
-                        legalMoves.add(new AttackMove(board, pieceAtDestination, possibleDestinationPosition, pieceAtDestination));
+                        legalMoves.add(new AttackMove(board, this, possibleDestinationPosition, pieceAtDestination));
                     }
                 }
             }
