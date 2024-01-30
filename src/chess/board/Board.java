@@ -26,16 +26,20 @@ public class Board {
 
     public static final int NUM_TILES = 64;
     private final List<Tile> gameBoard; // Use a list for immutability (an array cannot be made immutable)
+    
     private final Collection<Piece> whitePieces;
     private final WhitePlayer whitePlayer;
     private final Collection<Piece> blackPieces;
     private final BlackPlayer blackPlayer;
     private final Player currentPlayer;
+    private final Pawn enPassantPawn;
+
     public static final List<String> ALGEBRAIC_NOTATION = initializeAlgebraicNotation();
     public static final Map<String, Integer> CODE_TO_POSITION = initializeCodeToPositionMap();
 
     private Board(final BoardBuilder builder) {
         this.gameBoard = createGameBoard(builder);
+        this.enPassantPawn = builder.enPassantPawn;
         this.whitePieces = findActivePieces(this.gameBoard, Type.WHITE);
         this.blackPieces = findActivePieces(this.gameBoard, Type.BLACK);
         final Collection<Move> allWhiteMoves = findAllLegalMoves(this.whitePieces);
@@ -65,6 +69,10 @@ public class Board {
 
     public Player currentPlayer() {
         return this.currentPlayer;
+    }
+
+    public Pawn getEnPassantPawn() {
+        return this.enPassantPawn;
     }
 
     private static List<String> initializeAlgebraicNotation() {
@@ -231,6 +239,8 @@ public class Board {
             return new Board(this);
         }
 
+        // Keeping track of an enpassant pawn is quite convenient as enpassant availability can be checked by simply finding
+        // any adjacent pawns tagged as an enpassant pawn!
         public void setEnPassantPawn(final Pawn enPassantPawn) {
             this.enPassantPawn = enPassantPawn;
         }

@@ -3,8 +3,8 @@ package chess.board;
 /* Start of package imports */
 import chess.pieces.*;
 import java.util.Map;
-import com.google.common.collect.ImmutableMap;
 import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 /* End of package imports*/
 
 /* The tile class to describe individual tiles in the board

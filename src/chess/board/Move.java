@@ -120,6 +120,7 @@ public abstract class Move {
     // An attacking move to an occupied tile.
     public static class AttackMove extends Move {
         
+        // Attack moves need to keep track of the attacked piece
         final Piece attackedPiece;
 
         public AttackMove(final Board board, final Piece movedPiece, final int destination, final Piece attackedPiece) {
@@ -254,6 +255,11 @@ public abstract class Move {
             boardBuilder.setEnPassantPawn(movedPawn);
             boardBuilder.setMoveMaker(this.board.currentPlayer().getOpposingPlayer().getType());
             return boardBuilder.build();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            return this == o || o instanceof PawnJump && super.equals(o);
         }
 
         @Override

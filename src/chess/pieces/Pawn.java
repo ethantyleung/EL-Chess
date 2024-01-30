@@ -7,10 +7,12 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import chess.Type;
 import chess.board.*;
-import chess.board.Move.BaseMove;
+import chess.board.Move.EnPassant;
 import chess.board.Move.PawnAttackMove;
-/* End of package imports*/
 import chess.board.Move.PawnJump;
+import chess.board.Move.PawnMove;
+/* End of package imports*/
+
 
 /* The Pawn subclass. Describes the Pawn piece in Chess.
 *
@@ -43,7 +45,7 @@ public class Pawn extends Piece {
         if(Board.isValid(possibleDestinationPosition)) {
             // Checks if the pawn can move to the current possibleDestinationPosition
             if(!board.getTile(possibleDestinationPosition).isTileOccupied()) {
-                legalMoves.add(new BaseMove(board, this, possibleDestinationPosition));
+                legalMoves.add(new PawnMove(board, this, possibleDestinationPosition));
                 // In order for a Pawn to jump a tile, it must be its first move, and both tiles in front must be empty.
                 // It would be redundant to check if it is a valid tile (if it is a pawn's first move, it can only move to valid tiles on the board).
                 if(firstMove && !board.getTile(possibleDestinationPosition + offset).isTileOccupied()) {
@@ -74,6 +76,21 @@ public class Pawn extends Piece {
                     final Type typeAtDestination = pieceAtDestination.getType();
                     if(this.getType() != typeAtDestination){
                         legalMoves.add(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
+                    }
+                }
+            }
+
+            // Deal with EnPassant if there is an EnPassant pawn present on the board
+            if(board.getEnPassantPawn() != null) {
+                if(board.getEnPassantPawn().getPosition() == this.position + 1) {
+                    final Piece pieceAtDestination = board.getEnPassantPawn();
+                    if(this.getType() != pieceAtDestination.getType()) {
+                        legalMoves.add(new EnPassant(board, this, this.position + offset + 1, pieceAtDestination));
+                    }
+                } else if(board.getEnPassantPawn().getPosition() == this.position - 1) {
+                    final Piece pieceAtDestination = board.getEnPassantPawn();
+                    if(this.getType() != pieceAtDestination.getType()) {
+                        legalMoves.add(new EnPassant(board, this, this.position + offset - 1, pieceAtDestination));
                     }
                 }
             }

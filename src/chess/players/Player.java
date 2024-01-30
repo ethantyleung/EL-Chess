@@ -26,8 +26,8 @@ public abstract class Player {
     public Player(final Board board, final Collection<Move> allLegalMoves, final Collection<Move> allOpposingMoves) {
         this.board = board;
         this.theKingPiece = setKingPiece();
-        this.allLegalMoves = ImmutableList.copyOf(Iterables.concat(allLegalMoves, calculateKingCastles(allLegalMoves, allOpposingMoves)));
         this.isChecked = !Player.calculateAttacksOnTile(this.theKingPiece.getPosition(), allOpposingMoves).isEmpty();
+        this.allLegalMoves = ImmutableList.copyOf(Iterables.concat(allLegalMoves, calculateKingCastles(allLegalMoves, allOpposingMoves)));
     }
 
     // Find all the enemy moves that are attacking a specific tile coordinate

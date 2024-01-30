@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
 import chess.board.Board;
 import chess.board.Move;
 import chess.board.Tile;
-import chess.board.Move.AttackMove;
 import chess.pieces.Piece;
 import chess.players.BoardTransition;
 
@@ -338,8 +337,8 @@ public class Game {
         // Highlight the legal moves
         private void highlightLegalMoves(final Board board) {
             if(highlightLegalMoves) {
-                for(final Move move : pieceLegalMoves(board)) { // For every move that is in the piece's set of legal moves
-                    if(move.getDestinationPosition() == this.tilePosition && !(move instanceof AttackMove)) { // Check if the move's destination position is the current tile
+                for(final Move move : pieceLegalMoves(board)) { // For every move that is in the piece's set of legal moves    
+                if(move.getDestinationPosition() == this.tilePosition && !board.getTile(this.tilePosition).isTileOccupied()) { // Check if the move's destination position is the current tile
                         try {
                             add(new JLabel(new ImageIcon(ImageIO.read(new File("art/Misc/blackdot.png"))))); // try to add a circle to the tile
                         } catch(Exception e) {
