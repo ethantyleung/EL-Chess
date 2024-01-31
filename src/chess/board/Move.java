@@ -78,6 +78,10 @@ public abstract class Move {
         return null;
     }
 
+    public Board getBoard() {
+        return this.board;
+    }
+
     public Board execute() {
 
         final BoardBuilder boardBuilder = new BoardBuilder();
@@ -227,7 +231,6 @@ public abstract class Move {
         public String toString() {
             return Board.getCodeAtPosition(this.destination);
         }
-
     }
 
     // A pawn jump (pawn moving two tiles)
@@ -266,8 +269,64 @@ public abstract class Move {
         public String toString() {
             return Board.getCodeAtPosition(this.destination);
         }
+    }
 
-    }  
+    public static class PawnPromotion extends Move {
+        
+        final Move promotingMove;
+        final Pawn promotingPawn;
+
+        public PawnPromotion(final Move promotingMove) {
+            super(promotingMove.getBoard(), promotingMove.getMovedPiece(), promotingMove.getDestinationPosition());
+            this.promotingMove = promotingMove;
+            this.promotingPawn = (Pawn) promotingMove.getMovedPiece();
+        }
+
+        @Override
+        public Board execute() {
+
+            final Board movedBoard = this.promotingMove.execute();
+            final BoardBuilder boardBuilder = new BoardBuilder();
+            for(final Piece piece : movedBoard.currentPlayer().findActivePieces()) {
+                if(!this.promotingPawn.equals(piece)) {
+                    boardBuilder.setPiece(piece);
+                }
+            }
+            for(final Piece piece : movedBoard.currentPlayer().getOpposingPlayer().findActivePieces()) {
+                boardBuilder.setPiece(piece);
+            }
+            boardBuilder.setPiece(this.promotingPawn.getPromotionPiece().movePiece(this));
+            boardBuilder.setMoveMaker(movedBoard.currentPlayer().getType());
+            return boardBuilder.build();
+
+        }
+
+        @Override
+        public boolean isAttack() {
+            return this.promotingMove.isAttack();
+        }
+
+        @Override
+        public Piece getAttackedPiece() {
+            return this.promotingMove.getAttackedPiece();
+        }
+
+        @Override
+        public int hashCode() {
+            return promotingMove.hashCode() + (31 * promotingPawn.hashCode());
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            return this == o || o instanceof PawnPromotion && (super.equals(o));
+        }
+
+        @Override
+        public String toString() {
+            return "";
+        }
+
+    }
 
     // Special move type: castling
     static abstract class CastleMove extends Move {

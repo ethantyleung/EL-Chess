@@ -12,6 +12,7 @@ import chess.board.Move.PawnAttackMove;
 import chess.board.Move.PawnJump;
 import chess.board.Move.PawnMove;
 /* End of package imports*/
+import chess.board.Move.PawnPromotion;
 
 
 /* The Pawn subclass. Describes the Pawn piece in Chess.
@@ -33,6 +34,10 @@ public class Pawn extends Piece {
         super(pieceType, position, firstMove, PAWN_VALUE);
     }
 
+    public Piece getPromotionPiece() {
+        return new Queen(this.pieceType, this.position);
+    }
+
     @Override
     public Collection<Move> calculateLegalMoves(final Board board) {
 
@@ -45,7 +50,12 @@ public class Pawn extends Piece {
         if(Board.isValid(possibleDestinationPosition)) {
             // Checks if the pawn can move to the current possibleDestinationPosition
             if(!board.getTile(possibleDestinationPosition).isTileOccupied()) {
-                legalMoves.add(new PawnMove(board, this, possibleDestinationPosition));
+                // Check if we want to add a pawn promotion move
+                if(this.pieceType.isPromotionTile(possibleDestinationPosition)) {
+                    legalMoves.add(new PawnPromotion(new PawnMove(board, this, possibleDestinationPosition)));
+                } else {
+                    legalMoves.add(new PawnMove(board, this, possibleDestinationPosition));
+                }
                 // In order for a Pawn to jump a tile, it must be its first move, and both tiles in front must be empty.
                 // It would be redundant to check if it is a valid tile (if it is a pawn's first move, it can only move to valid tiles on the board).
                 if(firstMove && !board.getTile(possibleDestinationPosition + offset).isTileOccupied()) {
@@ -63,7 +73,11 @@ public class Pawn extends Piece {
                     final Piece pieceAtDestination = possibleDestinationTile.getPiece();
                     final Type typeAtDestination = pieceAtDestination.getType();
                     if(this.getType() != typeAtDestination){
-                        legalMoves.add(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
+                        if(this.pieceType.isPromotionTile(possibleDestinationPosition)) {
+                            legalMoves.add(new PawnPromotion(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination)));
+                        } else {
+                            legalMoves.add(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
+                        }    
                     }
                 }
             }
@@ -75,7 +89,11 @@ public class Pawn extends Piece {
                     final Piece pieceAtDestination = possibleDestinationTile.getPiece();
                     final Type typeAtDestination = pieceAtDestination.getType();
                     if(this.getType() != typeAtDestination){
-                        legalMoves.add(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
+                        if(this.pieceType.isPromotionTile(possibleDestinationPosition)) {
+                            legalMoves.add(new PawnPromotion(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination)));
+                        } else {
+                            legalMoves.add(new PawnAttackMove(board, this, possibleDestinationTile.getTileCoordinate(), pieceAtDestination));
+                        }
                     }
                 }
             }

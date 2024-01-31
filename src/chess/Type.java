@@ -28,6 +28,11 @@ public enum Type {
         public Player chooseNextPlayer(final BlackPlayer blackPlayer, final WhitePlayer whitePlayer) {
             return whitePlayer;
         }
+
+        @Override
+        public boolean isPromotionTile(int position) {
+            return (position >= 0 && position <= 7);
+        }
     },
     BLACK {
         @Override
@@ -49,10 +54,16 @@ public enum Type {
         public Player chooseNextPlayer(final BlackPlayer blackPlayer, final WhitePlayer whitePlayer) {
             return blackPlayer;
         }
+
+        @Override
+        public boolean isPromotionTile(int position) {
+            return (position >= 56 && position <= 63);
+        }
     };
 
     public abstract int getDirection();
     public abstract boolean isWhite();
     public abstract boolean isBlack();
+    public abstract boolean isPromotionTile(final int position);
     public abstract Player chooseNextPlayer(BlackPlayer blackPlayer, WhitePlayer whitePlayer);
 }
